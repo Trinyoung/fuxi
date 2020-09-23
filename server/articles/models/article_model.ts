@@ -1,0 +1,45 @@
+/*
+ * @Author: Trinyoung.Lu
+ * @Date: 2020-09-12 20:53:18
+ * @LastEditors: Trinyoung.Lu
+ * @LastEditTime: 2020-09-23 09:56:22
+ * @PageTitle: XXX页面
+ * @Description: XXX
+ * @FilePath: \process2\server\articles\models\article_model.ts
+ */
+import db from '../../../db/mongo/mongo';
+import { Schema, PaginateModel } from 'mongoose';
+import * as mongoosePaginate from 'mongoose-paginate';
+import * as uniqueValidator from 'mongoose-unique-validator';
+import { ArticleInterface } from '../interface';
+
+
+const ArticleSchema = new Schema({
+    title: String,
+    type: { type: Schema.Types.ObjectId, ref: 'articleType' },
+    category: { type: Number, enum: [1, 2, 3] }, // 1 代表单篇幅文章， 2 代表系列文章
+    published: { type: Number, enum: [0, 1], default: 0 }, // 0- 未发布，1-已发布
+    isPublic: { type: Number, enum: [0, 1] }, // 是否公开
+    refers: [{ title: String, link: String }],
+    tags: [{ type: Schema.Types.ObjectId, ref: 'tags' }],
+    is_deleted: { type: Number, default: 0 },
+    hasReads: { type: Number, default: 0 },
+    favorites: [{
+        createdAt: Number,
+        createdBy: String
+    }],
+    isMarkdown: { type: Number, enum: [0, 1], default: 1 },
+    subtitle: String,
+    content: String,
+    abstract: String,
+    content_html: String,
+    createdAt: Number,
+    updatedAt: Number,
+    createdBy: { type: Schema.Types.ObjectId, ref: 'user' }, // uid
+    updatedBy: { type: Schema.Types.ObjectId, ref: 'user' },
+    sourceUrl: String
+});
+
+ArticleSchema.plugin(mongoosePaginate);
+ArticleSchema.plugin(uniqueValidator);
+export const ArticleModel: PaginateModel<ArticleInterface> = db('article', ArticleSchema);
