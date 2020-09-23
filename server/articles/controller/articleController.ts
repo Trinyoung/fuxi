@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 16:37:53
+ * @LastEditTime: 2020-09-23 17:04:36
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\articleController.ts
@@ -80,7 +80,6 @@ export default class ArticleController extends BaseController<ArticleService> {
                 }
             ];
             const result = await this.service.getListByPage(query, limit, page, projection, populater);
-            console.log(result, '===============>')
             return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('获取文章列表失败', err.message);

@@ -2,10 +2,10 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-12 20:53:18
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 09:56:22
+ * @LastEditTime: 2020-09-23 16:44:31
  * @PageTitle: XXX页面
  * @Description: XXX
- * @FilePath: \process2\server\articles\models\article_model.ts
+ * @FilePath: \fuxi\server\articles\models\article_model.ts
  */
 import db from '../../../db/mongo/mongo';
 import { Schema, PaginateModel } from 'mongoose';
@@ -24,10 +24,6 @@ const ArticleSchema = new Schema({
     tags: [{ type: Schema.Types.ObjectId, ref: 'tags' }],
     is_deleted: { type: Number, default: 0 },
     hasReads: { type: Number, default: 0 },
-    favorites: [{
-        createdAt: Number,
-        createdBy: String
-    }],
     isMarkdown: { type: Number, enum: [0, 1], default: 1 },
     subtitle: String,
     content: String,

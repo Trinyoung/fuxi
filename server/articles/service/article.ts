@@ -2,14 +2,14 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 16:33:21
+ * @LastEditTime: 2020-09-23 18:13:26
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\article.ts
  */
 import { BaseService } from "../../base/baseService"
 import { ArticleModel } from '../models/article_model';
-import { ReaderSchema } from '../models/reader';
+import { ReadModel } from '../models/reader';
 import { ArticleInterface, ReadInterface, ArticleTypeInterface } from '../interface';
 import { populateInterface } from '../../base/baseInterface';
 import { User } from '../../user/userInterface';
@@ -39,7 +39,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
         const InAweek = moment().unix() - (7 * 60 * 60 * 24);
         const InAMonth = moment().unix() - (30 * 60 * 60 * 24);
         const ids = result.docs.map(item => item._id);
-        const reads = await ReaderSchema.find({ _id: { $in: ids } });
+        const reads = await ReadModel.find({ _id: { $in: ids } });
         const readsKeyByArticle = reads.reduce((x:any, y:ReadInterface) => {
             if (x[JSON.stringify(y.articleId)]) {
                 x[y._id].reads ++
