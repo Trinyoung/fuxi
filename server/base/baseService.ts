@@ -2,10 +2,10 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-12 20:53:18
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-22 19:04:19
+ * @LastEditTime: 2020-09-23 19:18:49
  * @PageTitle: XXX页面
  * @Description: XXX
- * @FilePath: \process2\server\base\baseService.ts
+ * @FilePath: \fuxi\server\base\baseService.ts
  */
 import * as moment from 'moment';
 import { ModelUpdateOptions, QueryFindOneAndUpdateOptions, FilterQuery, UpdateQuery, PaginateModel, PaginateResult, PaginateOptions } from 'mongoose';
@@ -15,23 +15,21 @@ export class BaseService<T extends BaseInterface> {
         this.model = model;
     }
 
-    public async createItem(uid: string, body: T): Promise<T> {
-        body.createdBy = uid;
-        body.updatedBy = uid;
+    public async createItem(body: T): Promise<T> {
         body.createdAt = moment().unix();
         const item = new this.model(body);
         return item.save();
     }
 
-    public async updateItem(uid: string, condition: UpdateQuery<T>, query: FilterQuery<T>, options?: ModelUpdateOptions) {
-        condition = this._fullItem(uid, condition);
+    public async updateItem(condition: UpdateQuery<T>, query: FilterQuery<T>, options?: ModelUpdateOptions) {
+        condition = this._fullItem(condition);
         query = this._fullQuery(query);
         await this.model.update(query, condition, options);
         return;
     };
 
-    public async findOneAndUpdateItem(uid: string, query: FilterQuery<T>, condition: UpdateQuery<T>, options?: QueryFindOneAndUpdateOptions): Promise<T> {
-        condition = this._fullItem(uid, condition);
+    public async findOneAndUpdateItem(query: FilterQuery<T>, condition: UpdateQuery<T>, options?: QueryFindOneAndUpdateOptions): Promise<T> {
+        condition = this._fullItem(condition);
         query = this._fullQuery(query);
         const result = await this.model.findOneAndUpdate(query, condition, options);
         return result;
@@ -76,9 +74,8 @@ export class BaseService<T extends BaseInterface> {
         return result;
     }
 
-    private _fullItem(uid: string, body: UpdateQuery<T> = {}) {
+    private _fullItem(body: UpdateQuery<T> = {}) {
         return Object.assign({
-            updatedBy: uid,
             updatedAt: moment().unix()
         }, body);
     }

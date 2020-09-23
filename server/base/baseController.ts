@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-12 20:53:18
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 16:28:46
+ * @LastEditTime: 2020-09-23 19:24:39
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\base\baseController.ts
@@ -20,9 +20,8 @@ export class BaseController<T extends BaseService<BaseInterface>>{
     public async create(ctx: ParameterizedContext) {
         try {
             const { body } = ctx.request;
-            const user = ctx.user;
-            const result = await this.service.createItem(user._id, body);
-            ctx.body = { code: '000', result };
+            const result = await this.service.createItem(body);
+            return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.error('create error：', err.message);
             return ctx.body = { code: '999', err };
@@ -33,7 +32,7 @@ export class BaseController<T extends BaseService<BaseInterface>>{
         try {
             const { body } = ctx.request;
             const user = ctx.user;
-            await this.service.updateItem(user._id, body, { is_deleted: 1 });
+            await this.service.updateItem(body, { is_deleted: 1 });
             return ctx.body = { code: '000', message: '删除成功' };
         } catch (err) {
             Logger.info('update Error:', err.message);

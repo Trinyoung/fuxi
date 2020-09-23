@@ -2,16 +2,29 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-23 11:14:30
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 18:16:13
+ * @LastEditTime: 2020-09-23 19:32:13
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\favoriteController.ts
  */
 import { BaseController } from '../../base/baseController';
 import { FavoriteService, favoriteService } from '../service/favorite';
-
+import { ParameterizedContext } from 'koa';
 export default class FavoriteController extends BaseController<FavoriteService> {
     constructor() {
         super(favoriteService);
     }
+
+    public async create(ctx: ParameterizedContext) {
+        try {
+            const { body } = ctx.request.body;
+            const result = await this.service.createItem(body);
+            const millisecond = new Date().getTime();
+            ctx.cookies.set(`favorite-${result._id}`, result._id, { expires: new Date(millisecond + 15 * 60 * 1000) });
+            return ctx.body = { code: '000', result };
+        } catch (err) {
+            return ctx.body = { code: '999', err }
+        }
+    }
+
 }
