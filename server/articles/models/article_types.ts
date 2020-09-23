@@ -2,10 +2,10 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:21
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-14 18:18:35
+ * @LastEditTime: 2020-09-23 18:46:08
  * @PageTitle: XXX页面
  * @Description: XXX
- * @FilePath: \process2\server\articles\models\article_types.ts
+ * @FilePath: \fuxi\server\articles\models\article_types.ts
  */
 import db from '../../../db/mongo/mongo';
 import { Schema, PaginateModel } from 'mongoose';
@@ -25,7 +25,8 @@ const ArticleTypeSchema = new Schema({
     createdAt: { type: Number, default: moment().unix() },
     updatedAt: { type: Number, default: moment().unix() },
     createdBy: { type: String, refs: 'user' },
-    updatedBy: { type: String, ref: 'user' }
+    updatedBy: { type: String, ref: 'user' },
+    is_deleted: { type: Number, default: 0 }
 });
 
 ArticleTypeSchema.plugin(mongoosePaginate);

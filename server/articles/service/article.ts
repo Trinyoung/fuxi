@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 18:13:26
+ * @LastEditTime: 2020-09-23 18:32:03
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\article.ts
@@ -18,20 +18,6 @@ import { FilterQuery, UpdateQuery } from "mongoose";
 export class ArticleService extends BaseService<ArticleInterface> {
     constructor() {
         super(ArticleModel);
-    }
-
-    public async publish(user: User, query: FilterQuery<ArticleInterface>, condition: UpdateQuery<ArticleInterface>) { // 文章发布
-        const option = { upsert: true, new: true };
-        condition = Object.assign(condition, { updatedBy: user.uid, createdBy: user.uid, updatedAt: moment().unix() });
-        const article = await this.findOneAndUpdateItem(user.uid, query, condition, option);
-        return article;
-    }
-
-    // 包括创建和更新文章
-    public async submit(user: User, query: FilterQuery<ArticleInterface>, condition: UpdateQuery<ArticleInterface>) {
-        const option = { upsert: true, new: true };
-        const article = await this.findOneAndUpdateItem(user.uid, query, condition, option);
-        return article;
     }
 
     public async getListByPageForAriticle(query: FilterQuery<ArticleInterface>, page = 1, limit = 10, projection?: string, populate?: string | string[] | populateInterface | populateInterface[]) {
@@ -79,11 +65,6 @@ export class ArticleService extends BaseService<ArticleInterface> {
             limit: result.limit,
             page: result.page
         }
-    }
-
-    // public async getListByPageFor
-    public async getListByPageForTypes(query: FilterQuery<ArticleTypeInterface>, page = 1, limit = 10) {
-        const articleList = await this.getListByPage
     }
 }
 
