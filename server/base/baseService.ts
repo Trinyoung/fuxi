@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-12 20:53:18
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 19:18:49
+ * @LastEditTime: 2020-10-05 18:31:50
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\base\baseService.ts
@@ -35,7 +35,7 @@ export class BaseService<T extends BaseInterface> {
         return result;
     }
 
-    public async getListByPage(query: FilterQuery<T>, limit = 10, page = 1, projection?: string, populate?: string | populateInterface | string[] | populateInterface[]): Promise<PaginateResult<T>> {
+    public async getListByPage(query: FilterQuery<T>, page = 1, limit = 10, projection?: string, populate?: string | populateInterface | string[] | populateInterface[]): Promise<PaginateResult<T>> {
         let options: PaginateOptions;
         query = this._fullQuery(query);
         options = {

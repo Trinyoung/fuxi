@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 18:32:32
+ * @LastEditTime: 2020-10-05 18:45:01
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\articleController.ts
@@ -57,15 +57,11 @@ export default class ArticleController extends BaseController<ArticleService> {
             const projection = '';
             let populater: populateInterface[] = [
                 {
-                    path: 'createdBy',
-                    select: 'realName uid',
-                },
-                {
                     path: 'articleType',
                     select: 'title typeCode'
                 }
             ];
-            const result = await this.service.getListByPage(query, limit, page, projection, populater);
+            const result = await this.service.getListByPageForAriticle(query, Number(page), limit, projection, populater);
             return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('获取文章列表失败', err.message);

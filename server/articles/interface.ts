@@ -2,10 +2,10 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 13:18:49
+ * @LastEditTime: 2020-09-29 19:44:00
  * @PageTitle: XXX页面
  * @Description: XXX
- * @FilePath: \process2\server\articles\interface.ts
+ * @FilePath: \fuxi\server\articles\interface.ts
  */
 import { BaseInterface } from '../base/baseInterface';
 import { Schema, Document } from 'mongoose';
@@ -37,7 +37,7 @@ export interface ArticleInterface extends BaseInterface, Document {
     createdBy?: string,
     publised?: yesorno
     hasReads?: number,
-    favorites?: baseCreated[]
+    favorites?: number
 }
 
 export interface FavoriteInterface extends BaseInterface, Document {
