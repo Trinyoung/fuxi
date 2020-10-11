@@ -22,21 +22,11 @@ export default class ArticleController extends BaseController<ArticleService> {
     public async getOne(ctx: ParameterizedContext) {
         try {
             const _id = ctx.params.id
-            let populater: populateInterface[] = [
-                {
-                    path: 'createdBy',
-                    select: 'realName uid',
-                },
-                {
-                    path: 'articleType',
-                    select: 'title typeCode'
-                }
-            ];
             let projection = 'createdBy content_html updatedBy title type createdAt updatedAt isMarkdown tags refers'
             if (ctx.query.console) {
                 projection += ' content isPublic '
             }
-            const result = await this.service.getItem({ _id }, projection, true, populater);
+            const result = await this.service.getAticleDetail({ _id }, projection, true);
             return ctx.body = { code: '000', data: result };
         } catch (err) {
             Logger.info('get error:', err.message);

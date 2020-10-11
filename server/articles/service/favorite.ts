@@ -10,10 +10,15 @@
 import { BaseService } from "../../base/baseService"
 import { favoriteModel } from '../models/favorite';
 import { FavoriteInterface } from '../interface';
+import { FilterQuery } from "mongoose";
 
 export class FavoriteService extends BaseService<FavoriteInterface> {
     constructor() {
         super(favoriteModel);
+    }
+    
+    public async getNums (query: FilterQuery<FavoriteInterface>) {
+        return await this.model.countDocuments(query);
     }
 }
 

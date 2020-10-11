@@ -25,6 +25,8 @@ export default (router: Router) => {
     router.get('/articles/types/list', typeController.getListByPage.bind(typeController));
     router.post('/articles/reads', readController.create.bind(readController));
 
-    router.post('/articles/favorites', setFavoriteCookie, favoriteController.create.bind(favoriteController));
+    router.post('/articles/favorites', favoriteController.create.bind(favoriteController));
+    router.get('/articles/favorites/articleteId', favoriteController.getOne.bind(favoriteController));
+    router.get('/aritcles/favorites/nums', favoriteController.getNums.bind(favoriteController))
     router.delete('/articles/favorites/:favoriteId', deleteFavoriteCookie, favoriteController.delete.bind(favoriteController));
 }

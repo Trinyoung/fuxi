@@ -10,21 +10,20 @@
 import { BaseController } from '../../base/baseController';
 import { FavoriteService, favoriteService } from '../service/favorite';
 import { ParameterizedContext } from 'koa';
+import { Logger } from '../../../logger/config';
 export default class FavoriteController extends BaseController<FavoriteService> {
     constructor() {
         super(favoriteService);
     }
 
-    public async create(ctx: ParameterizedContext) {
+    public async getNums(ctx: ParameterizedContext) {
         try {
-            const { body } = ctx.request.body;
-            const result = await this.service.createItem(body);
-            const millisecond = new Date().getTime();
-            ctx.cookies.set(`favorite-${result._id}`, result._id, { expires: new Date(millisecond + 15 * 60 * 1000) });
-            return ctx.body = { code: '000', result };
+            const query = ctx.request.body || ctx.query;
+            const result = await this.service.getNums(query);
+            return ctx.body = {code: '000', nums: result};
         } catch (err) {
-            return ctx.body = { code: '999', err }
+            Logger.error(`点赞计数出错:${err}`);
+            return ctx.body = { code: '999', err};
         }
     }
-
 }

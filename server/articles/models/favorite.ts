@@ -14,6 +14,7 @@ import { FavoriteInterface } from '../interface';
 const favoriteSchema = new Schema({
     createdAt: { type: Number, required: true },
     articleId: { type: Schema.Types.ObjectId },
+    createdBy: { type: String },
     is_deleted: { type: Number, required: true, default: 0 }
 });
 

@@ -41,8 +41,8 @@ export interface ArticleInterface extends BaseInterface, Document {
 }
 
 export interface FavoriteInterface extends BaseInterface, Document {
-    articleId: Schema.Types.ObjectId,
-    ip: string
+    articleId?: Schema.Types.ObjectId,
+    uid?: String
 }
 
 export interface ArticleTypeInterface extends BaseInterface, Document {
