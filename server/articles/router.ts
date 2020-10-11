@@ -12,7 +12,6 @@ import Controller from './controller/articleController';
 import TypeController from './controller/typeController';
 import ReadController from './controller/readerController';
 import FavoriteController from './controller/favoriteController';
-import { setFavoriteCookie, deleteFavoriteCookie } from '../../middleware/setCookie'
 export default (router: Router) => {
     const controller = new Controller();
     const typeController = new TypeController();
@@ -28,5 +27,5 @@ export default (router: Router) => {
     router.post('/articles/favorites', favoriteController.create.bind(favoriteController));
     router.get('/articles/favorites/articleteId', favoriteController.getOne.bind(favoriteController));
     router.get('/aritcles/favorites/nums', favoriteController.getNums.bind(favoriteController))
-    router.delete('/articles/favorites/:favoriteId', deleteFavoriteCookie, favoriteController.delete.bind(favoriteController));
+    router.delete('/articles/favorites/:favoriteId', favoriteController.delete.bind(favoriteController));
 }
