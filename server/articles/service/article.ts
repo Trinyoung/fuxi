@@ -69,6 +69,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
             if (y.createdAt > InAMonth) {
                 x[JSON.stringify(y.articleId)].monthFavorites++;
             }
+            return x;
         }, {});
         const resArr = result.docs.map(item => {
             const obj: any = Object.assign({}, item);

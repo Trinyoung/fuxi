@@ -4,6 +4,6 @@ export default (router: Router) => {
     const controller = new CommentController();
 
     router.get('/comments/:ariticleId/list', controller.getListByPage.bind(controller));
-    router.post('/comments/:articleId', controller.create.bind(controller));
+    router.post('/comments', controller.create.bind(controller));
     router.delete('/comments/:id', controller.delete.bind(controller));
 }
