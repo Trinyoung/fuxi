@@ -3,7 +3,7 @@ import CommentController from './controller/commentController';
 export default (router: Router) => {
     const controller = new CommentController();
 
-    router.get('/comments/:ariticleId/list', controller.getListByPage.bind(controller));
+    router.get('/comments/:articleId/list', controller.getList.bind(controller));
     router.post('/comments', controller.create.bind(controller));
     router.delete('/comments/:id', controller.delete.bind(controller));
 }

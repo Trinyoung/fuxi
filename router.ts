@@ -13,9 +13,11 @@ import userRouter from './server/user/router'
 import articleRouter from './server/articles/router'
 import tagRouter from './server/tags/router'
 import testRouter from './test'
+import commentRouter from './server/comments/router'
 export default (router: Router) => {
   userRouter(router);
   articleRouter(router);
   tagRouter(router);
   testRouter(router);
+  commentRouter(router);
 }
