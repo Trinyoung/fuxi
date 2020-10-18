@@ -94,12 +94,11 @@ export class ArticleService extends BaseService<ArticleInterface> {
 
     public async getAticleDetail(query?: FilterQuery<ArticleInterface>, projection?: string, lean = true, populate?: string | populateInterface | [string] | populateInterface[]) {
         const article = await this.getItem(query, projection, lean, populate);
-        const createdBy = await UserSchema.findOne({ uid: article.createdBy }, 'realName');
+        const createdBy = await UserSchema.findOne({ uid: article.createdBy }, 'realName uid');
         article.hasReads = await ReadModel.countDocuments({ articleId: article._id });
-        article.createdBy = createdBy.realName;
-        const res = Object.assign({ favorites: 0 }, article);
+        const res = Object.assign({ favorites: 0, author: createdBy.realName }, article);
         res.favorites = await favoriteModel.countDocuments({ articleId: article._id });
-        return article;
+        return res;
     }
 }
 

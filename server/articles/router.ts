@@ -22,6 +22,7 @@ export default (router: Router) => {
     router.get('/articles/:type/articles/list', controller.getListByPage.bind(controller));
 
     router.get('/articles/types/list', typeController.getListByPage.bind(typeController));
+    router.get('/articles/types/all', typeController.getList.bind(typeController));
     router.post('/articles/reads', readController.create.bind(readController));
 
     router.post('/articles/favorites', favoriteController.create.bind(favoriteController));

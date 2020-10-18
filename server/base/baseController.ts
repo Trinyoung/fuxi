@@ -56,7 +56,6 @@ export class BaseController<T extends BaseService<BaseInterface>>{
         try {
             console.log('get list is here')
             const query = Object.assign({}, ctx.query, ctx.params, ctx.request.body);
-            console.log(query, '===========><========query')
             const result = await this.service.getList(query);
             return ctx.body = {code: '000', list: result};
         } catch (err) {
