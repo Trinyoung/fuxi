@@ -17,6 +17,19 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
     constructor() {
         super(ArticleTypeModel);
     }
+
+    async getListForTypes (query:FilterQuery<ArticleTypeInterface>) {
+        const types = await this.getList(query, true);
+        
+    }
+
+    static cascaderForTypes (types:ArticleTypeInterface[], parent:ArticleTypeInterface) {
+        for (let type of types) {
+            if (!type.parent) {
+
+            }
+        }
+    }
 }
 
 export const typeService = new TypeService(); 

@@ -38,6 +38,7 @@ export class BaseService<T extends BaseInterface> {
     public async getListByPage(query: FilterQuery<T>, page = 1, limit = 10, projection?: string, populate?: string | populateInterface | string[] | populateInterface[]): Promise<PaginateResult<T>> {
         let options: PaginateOptions;
         query = this._fullQuery(query);
+        console.log(query, 'query is here=============>')
         options = {
             lean: true,
             limit,
@@ -46,12 +47,14 @@ export class BaseService<T extends BaseInterface> {
             populate: populate
         };
         const result = await this.model.paginate(query, options);
+        console.log(result, 'result-------------->')
         return result;
     }
 
-    public async getList(query: FilterQuery<T>, lean = false, projection?: string, populate?: string | populateInterface | [string] | populateInterface[]): Promise<T[]> {
+    public async getList(query: FilterQuery<T>, lean = false, projection?: string, populate?: string | populateInterface | [string] | populateInterface[]) {
         query = this._fullQuery(query);
-        const result = await this.model.find(query, projection).populate(populate);
+        
+        const result = await this.model.find(query, projection).populate(populate).lean(lean);
         return result;
     }
 

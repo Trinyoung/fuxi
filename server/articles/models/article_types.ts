@@ -21,7 +21,7 @@ const ArticleTypeSchema = new Schema({
     description: String,
     parent: { type: String },
     cover_url: String,
-    tags: [{ type: Schema.Types.ObjectId }],
+    tags: [{ type: Schema.Types.ObjectId, ref:'tag' }],
     createdAt: { type: Number, default: moment().unix() },
     updatedAt: { type: Number, default: moment().unix() },
     createdBy: { type: String, refs: 'user' },
