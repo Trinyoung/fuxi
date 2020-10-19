@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-05 19:35:37
+ * @LastEditTime: 2020-10-19 16:16:57
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\article.ts
@@ -96,7 +96,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
         const article = await this.getItem(query, projection, lean, populate);
         const createdBy = await UserSchema.findOne({ uid: article.createdBy }, 'realName uid');
         article.hasReads = await ReadModel.countDocuments({ articleId: article._id });
-        const res = Object.assign({ favorites: 0, author: createdBy.realName }, article);
+        const res = Object.assign({ favorites: 0, author: createdBy && createdBy.realName }, article);
         res.favorites = await favoriteModel.countDocuments({ articleId: article._id });
         return res;
     }
