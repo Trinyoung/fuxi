@@ -10,8 +10,8 @@
 import { BaseService } from "../../base/baseService"
 import { ArticleTypeModel } from '../models/article_types';
 import { ArticleTypeInterface, CascaderTypeInterface } from '../interface';
-import { User } from '../../user/userInterface';
-import * as moment from 'moment';
+// import { User } from '../../user/userInterface';
+// import * as moment from 'moment';
 import { FilterQuery, Model, Schema, UpdateQuery } from "mongoose";
 export class TypeService extends BaseService<ArticleTypeInterface> {
     constructor() {
@@ -20,14 +20,14 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
 
     async getListForTypes(query: FilterQuery<ArticleTypeInterface>) {
         const types = await this.getList(query, false);
-        console.log(types.length, '-----------------> 1 <---------------')
         const result:CascaderTypeInterface[] = [];
         TypeService.cascaderForTypes(types as ArticleTypeInterface[], null, result);
         return result;
     }
 
     static cascaderForTypes(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result: CascaderTypeInterface[]) {
-        types.forEach((type, index) => {
+        for (let i = 0; i<types.length; i++) {
+            const type = types[i]
             if (!parent) {
                 if (!type.parent) {
                     let item: CascaderTypeInterface = {
@@ -35,27 +35,31 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                         value: {
                             id: type._id,
                             typeCode: type.typeCode
-                        }
+                        },
+                        children: []
                     };
                     result.push(item);
-                    types.splice(index, 1);
+                    types.splice(i, 1);
+                    i--;
                     TypeService.cascaderForTypes(types, item, item.children);
                 }
             } else {
-                if (JSON.stringify(type.parent) === JSON.stringify(parent.value)) {
+                if (JSON.stringify(type.parent) === JSON.stringify(parent.value.id)) {
                     let item: CascaderTypeInterface = {
                         label: type.title,
                         value: {
                             id: type._id,
                             typeCode: type.typeCode
-                        }
+                        },
+                        children: []
                     };
                     result.push(item);
-                    types.splice(index, 1);
+                    types.splice(i, 1);
+                    i--;
                     TypeService.cascaderForTypes(types, item, item.children);
                 }
             }
-        })
+        }
     }
 }
 
