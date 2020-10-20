@@ -49,6 +49,10 @@ export default class ArticleController extends BaseController<ArticleService> {
                 {
                     path: 'articleType',
                     select: 'title typeCode'
+                },
+                {
+                    path: 'tags',
+                    select: 'name'
                 }
             ];
             const result = await this.service.getListByPageForAriticle(query, Number(page), limit, projection, populater);

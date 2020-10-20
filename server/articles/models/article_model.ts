@@ -21,7 +21,7 @@ const ArticleSchema = new Schema({
     published: { type: Number, enum: [0, 1], default: 0 }, // 0- 未发布，1-已发布
     isPublic: { type: Number, enum: [0, 1] }, // 是否公开
     refers: [{ title: String, link: String }],
-    tags: [{ type: Schema.Types.ObjectId, ref: 'tags' }],
+    tags: [{ type: Schema.Types.ObjectId, ref: 'tag' }],
     is_deleted: { type: Number, default: 0 },
     hasReads: { type: Number, default: 0 },
     isMarkdown: { type: Number, enum: [0, 1], default: 1 },
