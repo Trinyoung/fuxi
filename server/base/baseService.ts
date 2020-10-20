@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-12 20:53:18
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-05 18:31:50
+ * @LastEditTime: 2020-10-20 09:42:53
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\base\baseService.ts
@@ -53,9 +53,11 @@ export class BaseService<T extends BaseInterface> {
 
     public async getList(query: FilterQuery<T>, lean = false, projection?: string, populate?: string | populateInterface | [string] | populateInterface[]) {
         query = this._fullQuery(query);
-        
-        const result = await this.model.find(query, projection).populate(populate).lean(lean);
-        return result;
+        const result = this.model.find(query, projection).populate(populate);
+        if (lean) {
+            return await result.lean(true)
+        }
+        return await result;
     }
 
     public async getItem(query?: FilterQuery<T>, projection?: string, lean = true, populate?: string | populateInterface | [string] | populateInterface[]) {

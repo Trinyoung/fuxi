@@ -1,3 +1,12 @@
+/*
+ * @Author: Trinyoung.Lu
+ * @Date: 2020-10-20 08:34:43
+ * @LastEditors: Trinyoung.Lu
+ * @LastEditTime: 2020-10-20 10:49:43
+ * @PageTitle: XXX页面
+ * @Description: XXX
+ * @FilePath: \fuxi\server\articles\controller\typeController.ts
+ */
 import { ParameterizedContext } from 'koa';
 import { BaseController } from '../../base/baseController';
 import { TypeService, typeService } from '../service/type';
@@ -9,7 +18,7 @@ export default class TypeController extends BaseController<TypeService> {
         super(typeService);
     }
 
-    async getListByPage (ctx: ParameterizedContext) {
+    async getListByPage(ctx: ParameterizedContext) {
         try {
             const params = Object.assign({ page: 1, limit: 10 }, ctx.query, ctx.params, ctx.request.body);
             // const query = Object.assign({}, params, { limit: undefined, page: undefined });
@@ -18,8 +27,18 @@ export default class TypeController extends BaseController<TypeService> {
                 path: 'tags',
                 select: 'name'
             };
-            const result = await this.service.getListByPage(query, Number(params.page), Number(params.limit),  '', populater);
-            return ctx.body = {code: '000', result};
+            const result = await this.service.getListByPage(query, Number(params.page), Number(params.limit), '', populater);
+            return ctx.body = { code: '000', result };
+        } catch (err) {
+            Logger.info('getListByPage error：', err.message);
+            return ctx.body = { code: '999', err };
+        }
+    }
+
+    async cascaderForTypes(ctx: ParameterizedContext) {
+        try {
+            const result = await this.service.getListForTypes({});
+            return ctx.body = { code: '000', result }
         } catch (err) {
             Logger.info('getListByPage error：', err.message);
             return ctx.body = { code: '999', err };

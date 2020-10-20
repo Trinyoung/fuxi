@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-29 19:44:00
+ * @LastEditTime: 2020-10-20 17:01:53
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\interface.ts
@@ -58,4 +58,14 @@ export interface TagInterface extends BaseInterface, Document {
 
 export interface ReadInterface extends BaseInterface, Document {
     articleId: Schema.Types.ObjectId
+}
+
+export interface CascaderTypeInterface {
+    label: string,
+    value: {
+        id: Schema.Types.ObjectId,
+        typeCode: string
+    },
+    // typeCode: string,
+    children?: CascaderTypeInterface[]
 }

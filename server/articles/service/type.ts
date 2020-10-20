@@ -2,33 +2,60 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 19:21:03
+ * @LastEditTime: 2020-10-20 18:31:44
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
  */
 import { BaseService } from "../../base/baseService"
 import { ArticleTypeModel } from '../models/article_types';
-import { ArticleTypeInterface } from '../interface';
+import { ArticleTypeInterface, CascaderTypeInterface } from '../interface';
 import { User } from '../../user/userInterface';
 import * as moment from 'moment';
-import { FilterQuery, Model, UpdateQuery } from "mongoose";
+import { FilterQuery, Model, Schema, UpdateQuery } from "mongoose";
 export class TypeService extends BaseService<ArticleTypeInterface> {
     constructor() {
         super(ArticleTypeModel);
     }
 
-    async getListForTypes (query:FilterQuery<ArticleTypeInterface>) {
-        const types = await this.getList(query, true);
-        
+    async getListForTypes(query: FilterQuery<ArticleTypeInterface>) {
+        const types = await this.getList(query, false);
+        console.log(types.length, '-----------------> 1 <---------------')
+        const result:CascaderTypeInterface[] = [];
+        TypeService.cascaderForTypes(types as ArticleTypeInterface[], null, result);
+        return result;
     }
 
-    static cascaderForTypes (types:ArticleTypeInterface[], parent:ArticleTypeInterface) {
-        for (let type of types) {
-            if (!type.parent) {
-
+    static cascaderForTypes(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result: CascaderTypeInterface[]) {
+        types.forEach((type, index) => {
+            if (!parent) {
+                if (!type.parent) {
+                    let item: CascaderTypeInterface = {
+                        label: type.title,
+                        value: {
+                            id: type._id,
+                            typeCode: type.typeCode
+                        }
+                    };
+                    result.push(item);
+                    types.splice(index, 1);
+                    TypeService.cascaderForTypes(types, item, item.children);
+                }
+            } else {
+                if (JSON.stringify(type.parent) === JSON.stringify(parent.value)) {
+                    let item: CascaderTypeInterface = {
+                        label: type.title,
+                        value: {
+                            id: type._id,
+                            typeCode: type.typeCode
+                        }
+                    };
+                    result.push(item);
+                    types.splice(index, 1);
+                    TypeService.cascaderForTypes(types, item, item.children);
+                }
             }
-        }
+        })
     }
 }
 
