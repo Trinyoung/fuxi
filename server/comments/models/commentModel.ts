@@ -7,8 +7,10 @@ const commentSchema = new Schema({
     email: { type: String },
     content: { type: String, required: true },
     reply: { type: Schema.Types.ObjectId },
+    parent: { type: Schema.Types.ObjectId },
+    isTop: { type: Number, enum: [0, 1], default: 1 },
     createdAt: { type: Number, required: true },
-    articleId: { type: Schema.Types.ObjectId },
+    articleId: { type: Schema.Types.ObjectId, required: true },
     createdBy: { type: String },
     is_deleted: { type: Number, required: true, default: 0 }
 });

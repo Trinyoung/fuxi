@@ -75,7 +75,6 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
             }
         }
     }
-// }
 }
 
 export const typeService = new TypeService(); 

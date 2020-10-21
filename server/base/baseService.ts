@@ -85,7 +85,7 @@ export class BaseService<T extends BaseInterface> {
         }, body);
     }
 
-    private _fullQuery(query: FilterQuery<T>) {
+    _fullQuery(query: FilterQuery<T>) {
         return Object.assign({
             is_deleted: 0
         }, query);

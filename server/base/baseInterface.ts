@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export interface BaseInterface extends Document{
+export interface BaseInterface extends Document {
   updatedAt?: number,
   updatedBy?: string,
   is_deleted?: number,
@@ -18,4 +18,8 @@ export interface populateInterface {
   match?: Object,
   select?: string,
   options?: { limit: number }
+}
+export enum YesOrNo {
+  NO = 0,
+  Yes = 1
 }
