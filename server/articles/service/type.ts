@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-20 18:31:44
+ * @LastEditTime: 2020-10-21 14:27:01
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
@@ -20,47 +20,62 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
 
     async getListForTypes(query: FilterQuery<ArticleTypeInterface>) {
         const types = await this.getList(query, false);
-        const result:CascaderTypeInterface[] = [];
+        const result: CascaderTypeInterface[] = [];
         TypeService.cascaderForTypes(types as ArticleTypeInterface[], null, result);
         return result;
     }
 
     static cascaderForTypes(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result: CascaderTypeInterface[]) {
-        for (let i = 0; i<types.length; i++) {
+        for (let i = 0; i < types.length; i++) {
             const type = types[i]
-            if (!parent) {
-                if (!type.parent) {
-                    let item: CascaderTypeInterface = {
-                        label: type.title,
-                        value: {
-                            id: type._id,
-                            typeCode: type.typeCode
-                        },
-                        children: []
-                    };
-                    result.push(item);
-                    types.splice(i, 1);
-                    i--;
-                    TypeService.cascaderForTypes(types, item, item.children);
-                }
-            } else {
-                if (JSON.stringify(type.parent) === JSON.stringify(parent.value.id)) {
-                    let item: CascaderTypeInterface = {
-                        label: type.title,
-                        value: {
-                            id: type._id,
-                            typeCode: type.typeCode
-                        },
-                        children: []
-                    };
-                    result.push(item);
-                    types.splice(i, 1);
-                    i--;
-                    TypeService.cascaderForTypes(types, item, item.children);
-                }
+            // if (!parent) {
+            //     if (!type.parent) {
+            //         let item: CascaderTypeInterface = {
+            //             label: type.title,
+            //             value: {
+            //                 id: type._id,
+            //                 typeCode: type.typeCode
+            //             },
+            //             children: []
+            //         };
+            //         result.push(item);
+            //         types.splice(i, 1);
+            //         i--;
+            //         TypeService.cascaderForTypes(types, item, item.children);
+            //     }
+            // } else {
+            //     if (JSON.stringify(type.parent) === JSON.stringify(parent.value.id)) {
+            //         let item: CascaderTypeInterface = {
+            //             label: type.title,
+            //             value: {
+            //                 id: type._id,
+            //                 typeCode: type.typeCode
+            //             },
+            //             children: []
+            //         };
+            //         result.push(item);
+            //         types.splice(i, 1);
+            //         i--;
+            //         TypeService.cascaderForTypes(types, item, item.children);
+            //     }
+            // }
+            if (!parent && !type.parent || JSON.stringify(type.parent)===JSON.stringify(parent.value.id)) {
+                let item: CascaderTypeInterface = {
+                    label: type.title,
+                    value: {
+                        id: type._id,
+                        typeCode: type.typeCode
+                    },
+                    children: []
+                };
+                result.push(item);
+                types.splice(i, 1);
+                i--;
+                TypeService.cascaderForTypes(types, item, item.children);
             }
         }
     }
+// }
 }
 
 export const typeService = new TypeService(); 
