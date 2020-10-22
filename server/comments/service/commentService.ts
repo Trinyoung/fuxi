@@ -1,3 +1,12 @@
+/*
+ * @Author: Trinyoung.Lu
+ * @Date: 2020-10-22 08:37:03
+ * @LastEditors: Trinyoung.Lu
+ * @LastEditTime: 2020-10-22 08:42:48
+ * @PageTitle: XXX页面
+ * @Description: XXX
+ * @FilePath: \fuxi\server\comments\service\commentService.ts
+ */
 import { BaseService } from '../../base/baseService';
 import { commentModel } from '../models/commentModel';
 import { CommentInterface } from '../interface';
@@ -46,7 +55,7 @@ class CommentService extends BaseService<CommentInterface> {
                 const children = comments.filter(item => {
                     return JSON.stringify(item.parent) === JSON.stringify(item._id)
                 });
-                const newChildren = [];
+                const newChildren: any[] = [];
                 children.forEach(item => {
                     if (item.reply) {
                         const replyObj = children.find(ele => JSON.stringify(ele._id) === JSON.stringify(item.reply));
@@ -56,11 +65,11 @@ class CommentService extends BaseService<CommentInterface> {
                         newChildren.push(Object.assign({ replyName: replyObj.nilName }, item))
                     }
                 });
-                const b = newChildren;
-                // const topComment = {children: newChildren}
+                const topComment = Object.assign({ children: newChildren }, comment);
                 result.push(topComment);
             }
         }
+        return result;
     }
 }
 const commentService = new CommentService();
