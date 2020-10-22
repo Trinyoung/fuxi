@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-10-22 08:37:03
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-22 08:42:48
+ * @LastEditTime: 2020-10-22 20:13:00
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\comments\service\commentService.ts
@@ -18,7 +18,7 @@ class CommentService extends BaseService<CommentInterface> {
         super(commentModel);
     }
 
-    async getListForComments(query: FilterQuery<CommentInterface>, lean: Boolean, projection: string) {
+    async getListForComments(query: FilterQuery<CommentInterface>, lean: Boolean, projection?: string) {
         query = this._fullQuery(query);
         const model = this.model.find(query, projection);
         let result: CommentInterface[];
@@ -39,7 +39,7 @@ class CommentService extends BaseService<CommentInterface> {
             x[y.uid] = y;
             return x;
         }, {});
-        this._cascaderForComments(result, [], userKeyByUid);
+        return this._cascaderForComments(result, [], userKeyByUid);
     }
 
     _cascaderForComments(comments: CommentInterface[], result: any[], userKeyByUid: any) {

@@ -1,7 +1,29 @@
+/*
+ * @Author: Trinyoung.Lu
+ * @Date: 2020-10-19 15:57:57
+ * @LastEditors: Trinyoung.Lu
+ * @LastEditTime: 2020-10-22 19:34:00
+ * @PageTitle: XXX页面
+ * @Description: XXX
+ * @FilePath: \fuxi\server\comments\controller\commentController.ts
+ */
 import { BaseController } from '../../base/baseController';
-import { CommentService, commentService} from '../service/commentService';
+import { CommentService, commentService } from '../service/commentService';
+import { ParameterizedContext } from 'koa';
+import { Logger } from '../../../logger/config';
 export default class CommentController extends BaseController<CommentService> {
-    constructor () {
+    constructor() {
         super(commentService)
+    }
+    public async getListForComments(ctx: ParameterizedContext) {
+        try {
+            console.log('get list is here')
+            const query = Object.assign({}, ctx.query, ctx.params, ctx.request.body);
+            const result = await this.service.getListForComments(query, true);
+            return ctx.body = { code: '000', list: result };
+        } catch (err) {
+            Logger.info('get List error:', err.message);
+            return ctx.body = { code: '999', err };
+        }
     }
 }
