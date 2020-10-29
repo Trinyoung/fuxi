@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-10-22 08:37:03
  * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-22 20:13:00
+ * @LastEditTime: 2020-10-29 21:16:40
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\comments\service\commentService.ts
@@ -42,32 +42,36 @@ class CommentService extends BaseService<CommentInterface> {
         return this._cascaderForComments(result, [], userKeyByUid);
     }
 
-    _cascaderForComments(comments: CommentInterface[], result: any[], userKeyByUid: any) {
-        for (let i = 0; i < comments.length; i++) {
-            const comment = comments[i];
-            if (comment.isTop) {
-                if (comment.createdBy) {
-                    comment.nilName = userKeyByUid[comment.createdBy].username || userKeyByUid[comment.createdBy].realName;
-                    comment.email = userKeyByUid[comment.createdBy].email;
+    private _cascaderForComments(comments: CommentInterface[], result: any[], userKeyByUid: any) {
+        const topComments = comments.filter(item => item.isTop);
+        const childrenComments = comments.filter(item => !item.isTop);
+        const commentKeyById = comments.reduce((x: any, y) => {
+            x[y._id] = y;
+            return y
+        }, {});
+        const commentKeyByParent = childrenComments.reduce((x: any, y) => {
+            const replyObj: any = Object.assign({}, y);
+            replyObj.nilName = y.nilName || userKeyByUid[y.createdBy].username || userKeyByUid[y.createdBy].realName;
+            replyObj.email = y.email || userKeyByUid[y.createdBy].email;
+            if (JSON.stringify(replyObj.reply) !== JSON.stringify(replyObj.parent)) {
+                replyObj.target = {
+                    content: commentKeyById[replyObj.reply].content,
+                    nilName: commentKeyById[replyObj.reply].nilName || userKeyByUid[commentKeyById[replyObj.reply].createdBy].username || userKeyByUid[commentKeyById[replyObj.reply].createdBy].realName
                 }
-                comments.splice(i, 1);
-                i--;
-                const children = comments.filter(item => {
-                    return JSON.stringify(item.parent) === JSON.stringify(item._id)
-                });
-                const newChildren: any[] = [];
-                children.forEach(item => {
-                    if (item.reply) {
-                        const replyObj = children.find(ele => JSON.stringify(ele._id) === JSON.stringify(item.reply));
-                        if (replyObj.createdBy) {
-                            replyObj.nilName = userKeyByUid[comment.createdBy].username || userKeyByUid[comment.createdBy].realName;
-                        }
-                        newChildren.push(Object.assign({ replyName: replyObj.nilName }, item))
-                    }
-                });
-                const topComment = Object.assign({ children: newChildren }, comment);
-                result.push(topComment);
             }
+            if (x[JSON.stringify(y.parent)]) {
+                x[JSON.stringify(y.parent)].push(replyObj);
+            } else {
+                x[JSON.stringify(y.parent)] = [replyObj];
+            }
+            return x;
+        }, {});
+        for (let i = 0; i < topComments.length; i++) {
+            const comment = Object.assign({ children: [] }, comments[i]);
+            if (commentKeyByParent[comment._id]) {
+                comment.children = commentKeyByParent[comment._id];
+            }
+            result.push(comment);
         }
         return result;
     }
