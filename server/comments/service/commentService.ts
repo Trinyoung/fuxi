@@ -47,16 +47,16 @@ class CommentService extends BaseService<CommentInterface> {
         const childrenComments = comments.filter(item => !item.isTop);
         const commentKeyById = comments.reduce((x: any, y) => {
             x[y._id] = y;
-            return y
+            return x;
         }, {});
         const commentKeyByParent = childrenComments.reduce((x: any, y) => {
             const replyObj: any = Object.assign({}, y);
             replyObj.nilName = y.nilName || userKeyByUid[y.createdBy].username || userKeyByUid[y.createdBy].realName;
             replyObj.email = y.email || userKeyByUid[y.createdBy].email;
-            if (JSON.stringify(replyObj.reply) !== JSON.stringify(replyObj.parent)) {
+            if (y.reply && JSON.stringify(y.reply) !== JSON.stringify(y.parent)) {
                 replyObj.target = {
-                    content: commentKeyById[replyObj.reply].content,
-                    nilName: commentKeyById[replyObj.reply].nilName || userKeyByUid[commentKeyById[replyObj.reply].createdBy].username || userKeyByUid[commentKeyById[replyObj.reply].createdBy].realName
+                    content: commentKeyById[JSON.stringify(y.reply)].content,
+                    nilName: commentKeyById[JSON.stringify(y.reply)].nilName || userKeyByUid[commentKeyById[JSON.stringify(y.reply)].createdBy].username || userKeyByUid[commentKeyById[JSON.stringify(y.reply)].createdBy].realName
                 }
             }
             if (x[JSON.stringify(y.parent)]) {
@@ -68,8 +68,10 @@ class CommentService extends BaseService<CommentInterface> {
         }, {});
         for (let i = 0; i < topComments.length; i++) {
             const comment = Object.assign({ children: [] }, comments[i]);
-            if (commentKeyByParent[comment._id]) {
-                comment.children = commentKeyByParent[comment._id];
+            comment.nilName = userKeyByUid[comment.createdBy].username || userKeyByUid[comment.createdBy].realName;
+            comment.email = userKeyByUid[comment.createdBy].email;
+            if (commentKeyByParent[JSON.stringify(comment._id)]) {
+                comment.children = commentKeyByParent[JSON.stringify(comment._id)];
             }
             result.push(comment);
         }
