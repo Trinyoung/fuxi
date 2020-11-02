@@ -67,7 +67,7 @@ class CommentService extends BaseService<CommentInterface> {
             return x;
         }, {});
         for (let i = 0; i < topComments.length; i++) {
-            const comment = Object.assign({ children: [] }, comments[i]);
+            const comment = Object.assign({ children: [] }, topComments[i]);
             comment.nilName = userKeyByUid[comment.createdBy].username || userKeyByUid[comment.createdBy].realName;
             comment.email = userKeyByUid[comment.createdBy].email;
             if (commentKeyByParent[JSON.stringify(comment._id)]) {
