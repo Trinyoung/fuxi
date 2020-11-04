@@ -26,7 +26,8 @@ export default class ArticleController extends BaseController<ArticleService> {
             if (ctx.query.console) {
                 projection += ' content isPublic '
             }
-            const result = await this.service.getAticleDetail({ _id }, projection, true);
+            const populater = 'tags';
+            const result = await this.service.getAticleDetail({ _id }, projection, true, populater);
             return ctx.body = { code: '000', data: result };
         } catch (err) {
             Logger.info('get error:', err.message);
@@ -45,9 +46,10 @@ export default class ArticleController extends BaseController<ArticleService> {
                 query.category = category;
             }
             const projection = '';
+            console.log('------------><---------------------')
             let populater: populateInterface[] = [
                 {
-                    path: 'articleType',
+                    path: 'type',
                     select: 'title typeCode'
                 },
                 {
@@ -80,11 +82,11 @@ export default class ArticleController extends BaseController<ArticleService> {
                     select: 'realName uid',
                 },
                 {
-                    path: 'articleType',
+                    path: 'type',
                     select: 'title typeCode'
                 }
             ];
-            const result = await this.service.getListByPageForAriticle(query, limit, page, projection, populater);
+            const result = await this.service.getListByPageForAriticle(query, page, limit, projection, populater);
             return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('获取文章列表失败', err.message);

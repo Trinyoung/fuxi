@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import { FilterQuery, UpdateQuery } from "mongoose";
 import { UserSchema } from "../../user/models/user";
 import { favoriteModel } from "../models/favorite";
+// import { TagModel } from "server/tags/model";
 export class ArticleService extends BaseService<ArticleInterface> {
     constructor() {
         super(ArticleModel);
@@ -30,7 +31,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
         const uids = result.docs.map(item => item.createdBy);
         const reads = await ReadModel.find({ articleId: { $in: ids } });
         const authors = await UserSchema.find({ uid: { $in: uids } }, 'realName uid');
-        const authorKeyByUid = authors.reduce((x:any, y) => {
+        const authorKeyByUid = authors.reduce((x: any, y) => {
             x[y.uid] = y.realName;
             return x;
         }, {});
@@ -96,8 +97,9 @@ export class ArticleService extends BaseService<ArticleInterface> {
         const article = await this.getItem(query, projection, lean, populate);
         const createdBy = await UserSchema.findOne({ uid: article.createdBy }, 'realName uid');
         article.hasReads = await ReadModel.countDocuments({ articleId: article._id });
-        const res = Object.assign({ favorites: 0, author: createdBy && createdBy.realName }, article);
+        const res = Object.assign({ favorites: 0, author: createdBy && createdBy.realName, tags: [] }, article);
         res.favorites = await favoriteModel.countDocuments({ articleId: article._id });
+        // res.tags = await TagModel.find({ _id: { $in: article.tags } });
         return res;
     }
 }
