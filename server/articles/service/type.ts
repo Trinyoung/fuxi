@@ -27,50 +27,16 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
 
     static cascaderForTypes(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result: CascaderTypeInterface[]) {
         for (let i = 0; i < types.length; i++) {
-            const type = types[i]
-            // if (!parent) {
-            //     if (!type.parent) {
-            //         let item: CascaderTypeInterface = {
-            //             label: type.title,
-            //             value: {
-            //                 id: type._id,
-            //                 typeCode: type.typeCode
-            //             },
-            //             children: []
-            //         };
-            //         result.push(item);
-            //         types.splice(i, 1);
-            //         i--;
-            //         TypeService.cascaderForTypes(types, item, item.children);
-            //     }
-            // } else {
-            //     if (JSON.stringify(type.parent) === JSON.stringify(parent.value.id)) {
-            //         let item: CascaderTypeInterface = {
-            //             label: type.title,
-            //             value: {
-            //                 id: type._id,
-            //                 typeCode: type.typeCode
-            //             },
-            //             children: []
-            //         };
-            //         result.push(item);
-            //         types.splice(i, 1);
-            //         i--;
-            //         TypeService.cascaderForTypes(types, item, item.children);
-            //     }
-            // }
-            console.log(parent && parent.value, type.parent)
-            if (!parent && !type.parent || parent && JSON.stringify(type.parent) === parent.value.split('_')[1]) {
+            const type = types[i];
+            if (!parent && !type.parent || JSON.stringify(type.parent) === JSON.stringify(parent.value.split('_')[1])) {
                 let item: CascaderTypeInterface = {
                     label: type.title,
                     value: type.typeCode+'_'+type._id,
                     children: []
                 };
-                console.log(item.value, typeof item.value, '=================>')
                 result.push(item);
                 types.splice(i, 1);
                 i--;
-                console.log(types, '------------->')
                 TypeService.cascaderForTypes(types, item, item.children);
             }
         }
