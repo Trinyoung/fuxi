@@ -15,8 +15,19 @@ import { populateInterface } from '../../base/baseInterface';
 import { FilterQuery } from 'mongoose';
 import { ArticleInterface } from '../interface';
 export default class ArticleController extends BaseController<ArticleService> {
+    populater: populateInterface[]
     constructor() {
         super(articleService);
+        this.populater = [
+            {
+                path: 'type',
+                select: 'title typeCode'
+            },
+            {
+                path: 'tags',
+                select: 'name'
+            }
+        ]
     }
 
     public async getOne(ctx: ParameterizedContext) {
@@ -26,8 +37,7 @@ export default class ArticleController extends BaseController<ArticleService> {
             if (ctx.query.console) {
                 projection += ' content isPublic '
             }
-            const populater = 'tags';
-            const result = await this.service.getAticleDetail({ _id }, projection, true, populater);
+            const result = await this.service.getAticleDetail({ _id }, projection, true, this.populater);
             return ctx.body = { code: '000', data: result };
         } catch (err) {
             Logger.info('get error:', err.message);
@@ -46,18 +56,7 @@ export default class ArticleController extends BaseController<ArticleService> {
                 query.category = category;
             }
             const projection = '';
-            console.log('------------><---------------------')
-            let populater: populateInterface[] = [
-                {
-                    path: 'type',
-                    select: 'title typeCode'
-                },
-                {
-                    path: 'tags',
-                    select: 'name'
-                }
-            ];
-            const result = await this.service.getListByPageForAriticle(query, Number(page), limit, projection, populater);
+            const result = await this.service.getListByPageForAriticle(query, Number(page), limit, projection, this.populater);
             return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('获取文章列表失败', err.message);

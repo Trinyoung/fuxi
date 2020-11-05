@@ -62,10 +62,9 @@ export interface ReadInterface extends BaseInterface, Document {
 
 export interface CascaderTypeInterface {
     label: string,
-    value: {
-        id: Schema.Types.ObjectId,
-        typeCode: string
-    },
+    // value: Schema.Types.ObjectId,
+    // typeCode: string,
+    value: string,
     // typeCode: string,
     children?: CascaderTypeInterface[]
 }

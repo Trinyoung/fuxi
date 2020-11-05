@@ -99,7 +99,6 @@ export class ArticleService extends BaseService<ArticleInterface> {
         article.hasReads = await ReadModel.countDocuments({ articleId: article._id });
         const res = Object.assign({ favorites: 0, author: createdBy && createdBy.realName, tags: [] }, article);
         res.favorites = await favoriteModel.countDocuments({ articleId: article._id });
-        // res.tags = await TagModel.find({ _id: { $in: article.tags } });
         return res;
     }
 }

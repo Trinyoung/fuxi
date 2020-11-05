@@ -59,21 +59,37 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
             //         TypeService.cascaderForTypes(types, item, item.children);
             //     }
             // }
-            if (!parent && !type.parent || JSON.stringify(type.parent)===JSON.stringify(parent.value.id)) {
+            console.log(parent && parent.value, type.parent)
+            if (!parent && !type.parent || parent && JSON.stringify(type.parent) === parent.value.split('_')[1]) {
                 let item: CascaderTypeInterface = {
                     label: type.title,
-                    value: {
-                        id: type._id,
-                        typeCode: type.typeCode
-                    },
+                    value: type.typeCode+'_'+type._id,
                     children: []
                 };
+                console.log(item.value, typeof item.value, '=================>')
                 result.push(item);
                 types.splice(i, 1);
                 i--;
+                console.log(types, '------------->')
                 TypeService.cascaderForTypes(types, item, item.children);
             }
         }
+    }
+
+    async getParentTypes(typeCode: string) {
+        const length = typeCode.length;
+        const parents = [typeCode]
+        let i = 4;
+        while (i < length - 2) {
+            parents.push(typeCode.substr(0, i));
+            i += 2
+        }
+        const typeList = await this.getList({ typeCode: { $in: parents } }, true, 'typeCode title');
+        const result:{}[] = [];
+        typeList.forEach(item => {
+            result[(item.typeCode.length -4)/2] = item.typeCode + '_' + item._id;
+        })
+        return result;
     }
 }
 
