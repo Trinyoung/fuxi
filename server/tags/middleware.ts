@@ -23,12 +23,11 @@ export async function getTagsFromCache(ctx: ParameterizedContext, next: Next) {
                 if (!result) {
                     return resolve()
                 }
-                Logger.info('获取用户信息成功', result);
+                // Logger.info('获取用户信息成功', result);
                 return resolve(JSON.parse(decodeURIComponent(result)))
             })
         });
         if (result) {
-            console.log('here is cache')
             return ctx.body = {code: '000', list: result}
         }
     }

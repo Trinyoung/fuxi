@@ -10,9 +10,7 @@
 import { BaseService } from "../../base/baseService"
 import { ArticleTypeModel } from '../models/article_types';
 import { ArticleTypeInterface, CascaderTypeInterface } from '../interface';
-// import { User } from '../../user/userInterface';
-// import * as moment from 'moment';
-import { FilterQuery, Model, Schema, UpdateQuery } from "mongoose";
+import { FilterQuery } from "mongoose";
 export class TypeService extends BaseService<ArticleTypeInterface> {
     constructor() {
         super(ArticleTypeModel);
@@ -25,19 +23,25 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
         return result;
     }
 
-    static cascaderForTypes(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result: CascaderTypeInterface[]) {
+    static cascaderForTypes(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result?: CascaderTypeInterface[]) {
         for (let i = 0; i < types.length; i++) {
             const type = types[i];
-            if (!parent && !type.parent || JSON.stringify(type.parent) === JSON.stringify(parent.value.split('_')[1])) {
+            if (!parent && !type.parent || parent && JSON.stringify(type.parent) == JSON.stringify(parent.value.split('_')[1])) {
                 let item: CascaderTypeInterface = {
                     label: type.title,
                     value: type.typeCode+'_'+type._id,
-                    children: []
                 };
-                result.push(item);
+                if (parent) {
+                    if (!parent.children) {
+                        parent.children = []
+                    }
+                    parent.children.push(item);
+                } else {
+                    result.push(item)
+                }
                 types.splice(i, 1);
                 i--;
-                TypeService.cascaderForTypes(types, item, item.children);
+                TypeService.cascaderForTypes(types, item);
             }
         }
     }
@@ -51,9 +55,9 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
             i += 2
         }
         const typeList = await this.getList({ typeCode: { $in: parents } }, true, 'typeCode title');
-        const result:{}[] = [];
+        const result: {}[] = [];
         typeList.forEach(item => {
-            result[(item.typeCode.length -4)/2] = item.typeCode + '_' + item._id;
+            result[(item.typeCode.length - 4) / 2] = item.typeCode + '_' + item._id;
         })
         return result;
     }

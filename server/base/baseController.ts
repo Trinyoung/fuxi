@@ -54,7 +54,6 @@ export class BaseController<T extends BaseService<BaseInterface>>{
 
     public async getList(ctx: ParameterizedContext) {
         try {
-            console.log('get list is here')
             const query = Object.assign({}, ctx.query, ctx.params, ctx.request.body);
             const result = await this.service.getList(query);
             return ctx.body = {code: '000', list: result};

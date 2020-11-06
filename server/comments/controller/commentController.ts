@@ -17,7 +17,6 @@ export default class CommentController extends BaseController<CommentService> {
     }
     public async getListForComments(ctx: ParameterizedContext) {
         try {
-            console.log('get list is here')
             const query = Object.assign({}, ctx.query, ctx.params, ctx.request.body);
             const result = await this.service.getListForComments(query, true);
             return ctx.body = { code: '000', list: result };
