@@ -48,7 +48,8 @@ export default class TypeController extends BaseController<TypeService> {
     async getParentTypes(ctx: ParameterizedContext) {
         try {
             const typeCode = ctx.query.typeCode;
-            const result = await this.service.getParentTypes(typeCode);
+            const id = ctx.query.id;
+            const result = await this.service.getParentTypes(typeCode, id);
             return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('getParentTypes error:', err.message);

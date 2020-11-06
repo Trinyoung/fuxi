@@ -12,5 +12,5 @@ import Controller from './controller';
 import { getTagsFromCache } from './middleware';
 export default (router: Router) => {
     const controller = new Controller();
-    router.get('/tags', getTagsFromCache, controller.getList.bind(controller));
+    router.get('/tags', controller.getList.bind(controller));
 }

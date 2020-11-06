@@ -46,9 +46,13 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
         }
     }
 
-    async getParentTypes(typeCode: string) {
+    async getParentTypes(typeCode: string, id?: string) {
+        if (id) {
+            const type = await this.getItem({_id: id}, 'typeCode');
+            typeCode = type.typeCode;
+        }
         const length = typeCode.length;
-        const parents = [typeCode]
+        const parents = [typeCode];
         let i = 4;
         while (i < length - 2) {
             parents.push(typeCode.substr(0, i));
