@@ -105,6 +105,25 @@ export class ArticleService extends BaseService<ArticleInterface> {
         res.wordNums = article.content.length
         return res;
     }
+
+    public async hotAticles() {
+        // 是否热门的判断标准是 近一周之内 访问量超过 50, 一个月内超过100； 一周内点赞数超过10， 一个月内超过20；
+        // 排列的顺序是
+        favoriteModel.aggregate([
+            { match: { is_deleted: 0 } },
+            { group: { _id: '$articleId', createdAt: {$push: '$createdAt'}, total: {$sum: 1}} },
+            { match: {}}
+        ]);
+
+        ReadModel.aggregate([
+            { match: { is_deleted: 0} },
+            { group: {_id: '$articleId', createdAt: '$createdAt'}}
+        ]);
+    }
+
+    public async getNewArticles() {
+
+    }
 }
 
 export const articleService = new ArticleService(); 
