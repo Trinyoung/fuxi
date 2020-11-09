@@ -46,7 +46,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
         }
     }
 
-    async getParentTypes(typeCode: string, id?: string) {
+    async getParentTypes(typeCode: string, id?: string, withTitle?: number) {
         if (id) {
             const type = await this.getItem({_id: id}, 'typeCode');
             typeCode = type.typeCode;
@@ -58,10 +58,16 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
             parents.push(typeCode.substr(0, i));
             i += 2
         }
+        console.log(parents, 'parents================>')
         const typeList = await this.getList({ typeCode: { $in: parents } }, true, 'typeCode title');
         const result: {}[] = [];
         typeList.forEach(item => {
-            result[(item.typeCode.length - 4) / 2] = item.typeCode + '_' + item._id;
+            if (withTitle) {
+                result[(item.typeCode.length - 4) / 2] = item;
+            } else {
+                result[(item.typeCode.length - 4) / 2] = item.typeCode + '_' + item._id;
+            }
+            
         })
         return result;
     }

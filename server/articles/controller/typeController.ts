@@ -30,7 +30,7 @@ export default class TypeController extends BaseController<TypeService> {
             const result = await this.service.getListByPage(query, Number(params.page), Number(params.limit), '', populater);
             return ctx.body = { code: '000', result };
         } catch (err) {
-            Logger.info('getListByPage error：', err.message);
+            Logger.error('getListByPage error：', err.message);
             return ctx.body = { code: '999', err };
         }
     }
@@ -40,20 +40,19 @@ export default class TypeController extends BaseController<TypeService> {
             const result = await this.service.getListForTypes({});
             return ctx.body = { code: '000', result }
         } catch (err) {
-            Logger.info('getListByPage error：', err.message);
+            Logger.error('getListByPage error：', err.message);
             return ctx.body = { code: '999', err };
         }
     }
 
     async getParentTypes(ctx: ParameterizedContext) {
         try {
-            const typeCode = ctx.query.typeCode;
-            const id = ctx.query.id;
-            const result = await this.service.getParentTypes(typeCode, id);
+            const {typeCode, id, withTitle} = ctx.query;
+            const result = await this.service.getParentTypes(typeCode, id, Number(withTitle));
             return ctx.body = { code: '000', result };
         } catch (err) {
-            Logger.info('getParentTypes error:', err.message);
-            return ctx.body = { code: '999', err};
+            Logger.error('getParentTypes error:', err.message);
+            return ctx.body = { code: '999', err:err.message};
         }
     }
 }
