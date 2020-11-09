@@ -46,7 +46,7 @@ class CommentService extends BaseService<CommentInterface> {
         const topComments = comments.filter(item => item.isTop);
         const childrenComments = comments.filter(item => !item.isTop);
         const commentKeyById = comments.reduce((x: any, y) => {
-            x[y._id] = y;
+            x[JSON.stringify(y._id)] = y;
             return x;
         }, {});
         const commentKeyByParent = childrenComments.reduce((x: any, y) => {
