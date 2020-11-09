@@ -58,16 +58,14 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
             parents.push(typeCode.substr(0, i));
             i += 2
         }
-        console.log(parents, 'parents================>')
         const typeList = await this.getList({ typeCode: { $in: parents } }, true, 'typeCode title');
         const result: {}[] = [];
         typeList.forEach(item => {
             if (withTitle) {
-                result[(item.typeCode.length - 4) / 2] = item;
+                result[(item.typeCode.length - 4) / 4] = item;
             } else {
-                result[(item.typeCode.length - 4) / 2] = item.typeCode + '_' + item._id;
+                result[(item.typeCode.length - 4) / 4] = item.typeCode + '_' + item._id;
             }
-            
         })
         return result;
     }

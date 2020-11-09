@@ -33,7 +33,7 @@ export default class ArticleController extends BaseController<ArticleService> {
     public async getOne(ctx: ParameterizedContext) {
         try {
             const _id = ctx.params.id
-            let projection = 'createdBy content_html updatedBy title type createdAt updatedAt isMarkdown tags refers'
+            let projection = 'createdBy content_html updatedBy title type createdAt updatedAt isMarkdown tags refers content'
             if (ctx.query.console) {
                 projection += ' content isPublic '
             }

@@ -59,7 +59,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
                 x[JSON.stringify(y.articleId)].favorites++;
             } else {
                 x[JSON.stringify(y.articleId)] = {
-                    reads: 1,
+                    favorites: 1,
                     weekFavorites: 0,
                     monthFavorites: 0
                 }
@@ -72,12 +72,15 @@ export class ArticleService extends BaseService<ArticleInterface> {
             }
             return x;
         }, {});
+        console.log()
         const resArr = result.docs.map(item => {
             const obj: any = Object.assign({}, item);
             obj.isNew = item.createdAt > InAweek;
+            obj.hasReads = readsKeyByArticle[JSON.stringify(item._id)] && readsKeyByArticle[JSON.stringify(item._id)].reads || 0;
+            obj.favorites = favoriteKeyByArticle[JSON.stringify(item._id)] && favoriteKeyByArticle[JSON.stringify(item._id)].favorites || 0;
             // 是否热门的判断标准是 近一周之内 访问量超过 50, 一个月内超过100； 一周内点赞数超过10， 一个月内超过20；
-            const weekFavorites = favoriteKeyByArticle[item._id] && favoriteKeyByArticle[item._id].weekFavorites || 0;
-            const monthFavorites = favoriteKeyByArticle[item._id] && favoriteKeyByArticle[item._id].monthFavorites || 0;
+            const weekFavorites = favoriteKeyByArticle[JSON.stringify(item._id)] && favoriteKeyByArticle[JSON.stringify(item._id)].weekFavorites || 0;
+            const monthFavorites = favoriteKeyByArticle[JSON.stringify(item._id)] && favoriteKeyByArticle[JSON.stringify(item._id)].monthFavorites || 0;
             const weekView = readsKeyByArticle[JSON.stringify(item._id)] && readsKeyByArticle[JSON.stringify(item._id)].weekView || 0;
             const monthView = readsKeyByArticle[JSON.stringify(item._id)] && readsKeyByArticle[JSON.stringify(item._id)].weekView || 0;
             obj.isHot = weekFavorites > 10 || monthFavorites > 20 || weekView > 50 || monthView > 100;
@@ -97,8 +100,9 @@ export class ArticleService extends BaseService<ArticleInterface> {
         const article = await this.getItem(query, projection, lean, populate);
         const createdBy = await UserSchema.findOne({ uid: article.createdBy }, 'realName uid');
         article.hasReads = await ReadModel.countDocuments({ articleId: article._id });
-        const res = Object.assign({ favorites: 0, author: createdBy && createdBy.realName, tags: [] }, article);
+        const res = Object.assign({ favorites: 0, author: createdBy && createdBy.realName, tags: [], wordNums: 0 }, article);
         res.favorites = await favoriteModel.countDocuments({ articleId: article._id });
+        res.wordNums = article.content.length
         return res;
     }
 }
