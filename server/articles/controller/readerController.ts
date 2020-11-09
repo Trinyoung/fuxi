@@ -8,11 +8,11 @@
  * @FilePath: \process2\server\articles\controller\readerController.ts
  */
 import { BaseController } from '../../base/baseController';
-import { TypeService, typeService } from '../service/type';
+import { readService, ReadService } from '../service/readService';
 
-export default class ReaderController extends BaseController<TypeService> {
+export default class ReaderController extends BaseController<ReadService> {
     constructor() {
-        super(typeService);
+        super(readService);
     }
 
 }

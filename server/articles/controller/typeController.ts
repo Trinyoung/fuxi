@@ -21,7 +21,6 @@ export default class TypeController extends BaseController<TypeService> {
     async getListByPage(ctx: ParameterizedContext) {
         try {
             const params = Object.assign({ page: 1, limit: 10 }, ctx.query, ctx.params, ctx.request.body);
-            // const query = Object.assign({}, params, { limit: undefined, page: undefined });
             const query = _.omit(params, ['limit', 'page'])
             const populater = {
                 path: 'tags',

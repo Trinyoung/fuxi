@@ -11,7 +11,7 @@ import { BaseService } from "../../base/baseService"
 import { ReadModel } from '../models/reader';
 import { ReadInterface } from '../interface';
 
-export class TypeService extends BaseService<ReadInterface> {
+export class ReadService extends BaseService<ReadInterface> {
     constructor() {
         super(ReadModel);
     }
@@ -19,4 +19,4 @@ export class TypeService extends BaseService<ReadInterface> {
     
 }
 
-export const typeService = new TypeService(); 
+export const readService = new ReadService(); 
