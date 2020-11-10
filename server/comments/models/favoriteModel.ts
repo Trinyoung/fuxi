@@ -1,6 +1,6 @@
 import db from '../../../db/mongo/mongo';
 import { Schema, PaginateModel } from 'mongoose';
-import { CommentInterface } from '../interface';
+import { CommentFavoriteInterface } from '../interface';
 
 const commentFavoriteSchema = new Schema({
     createdAt: { type: Number, required: true },
@@ -9,4 +9,4 @@ const commentFavoriteSchema = new Schema({
     is_deleted: { type: Number, required: true, default: 0 }
 });
 
-export const commentModel: PaginateModel<CommentInterface> = db('commentFavorite', commentFavoriteSchema);
+export const commentFavoriteModel: PaginateModel<CommentFavoriteInterface> = db('commentFavorite', commentFavoriteSchema);

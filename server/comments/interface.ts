@@ -10,6 +10,7 @@ export interface CommentInterface extends BaseInterface, Document {
     reply?: Schema.Types.ObjectId
 }
 
-export interface commentFavoriteInterface extends BaseInterface, Document {
-    commentId?: Schema.Types.ObjectId
+export interface CommentFavoriteInterface extends BaseInterface, Document {
+    commentId: Schema.Types.ObjectId,
+    uid?: string
 }
