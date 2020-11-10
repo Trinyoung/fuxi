@@ -10,13 +10,15 @@
 import * as Router from 'koa-router';
 import CommentController from './controller/commentController';
 import CommentFavoriteController from './controller/favoriteController';
+import CommentMiddleware from './middleware';
 export default (router: Router) => {
     const controller = new CommentController();
     const favoriteController = new CommentFavoriteController();
+    const commentMiddleware = new CommentMiddleware();
 
     router.get('/comments/:articleId/list', controller.getListForComments.bind(controller));
-    router.post('/comments', controller.create.bind(controller));
+    router.post('/comments', commentMiddleware.commentVisitInfo, controller.create.bind(controller));
     router.delete('/comments/:id', controller.delete.bind(controller));
 
-    router.post('/comments/favorites')
+    router.post('/comments/favorites', favoriteController.create.bind(favoriteController));
 }
