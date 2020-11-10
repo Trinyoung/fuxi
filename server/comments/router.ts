@@ -20,5 +20,5 @@ export default (router: Router) => {
     router.post('/comments', commentMiddleware.commentVisitInfo, controller.create.bind(controller));
     router.delete('/comments/:id', controller.delete.bind(controller));
 
-    router.post('/comments/favorites', favoriteController.create.bind(favoriteController));
+    router.post('/comments/favorites', commentMiddleware.addCommentFavoriteNum, favoriteController.create.bind(favoriteController));
 }

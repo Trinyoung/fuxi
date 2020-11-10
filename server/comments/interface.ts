@@ -3,6 +3,7 @@ import { Schema, Document } from 'mongoose';
 export interface CommentInterface extends BaseInterface, Document {
     articleId?: Schema.Types.ObjectId,
     content?: string,
+    favoriteNum?: number,
     isTop?: YesOrNo,
     parent: Schema.Types.ObjectId,
     nilName?: string,

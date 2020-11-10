@@ -5,6 +5,7 @@ import { CommentInterface } from '../interface';
 const commentSchema = new Schema({
     nilName: { type: String },
     email: { type: String },
+    favoriteNum: { type: Number, default: 0 },
     content: { type: String, required: true },
     reply: { type: Schema.Types.ObjectId },
     parent: { type: Schema.Types.ObjectId },

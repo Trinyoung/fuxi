@@ -13,33 +13,40 @@ import { CommentInterface } from '../interface';
 import { FilterQuery } from 'mongoose';
 import { UserSchema } from '../../user/models/user';
 import { User } from '../../user/userInterface';
+import { commentFavoriteModel } from '../models/favoriteModel';
 class CommentService extends BaseService<CommentInterface> {
     constructor() {
         super(commentModel);
     }
 
-    async getListForComments(query: FilterQuery<CommentInterface>, lean: Boolean, projection?: string) {
+    async getListForComments(query: FilterQuery<CommentInterface>, uid: string, lean: Boolean, projection?: string) {
         query = this._fullQuery(query);
         const model = this.model.find(query, projection);
         let result: CommentInterface[];
-
+        const favorites = await commentFavoriteModel.find({ createdBy: uid, articleId: query.articleId });
+        const favoritesKeyByComment = favorites.reduce((x: any, y) => {
+            x[JSON.stringify(y._id)] = y;
+            return x;
+        }, {})
         if (lean) {
             result = await model.lean(true);
         } else {
             result = await model;
         }
         const uids: string[] = [];
-        result.forEach(item => {
+        const comments = result.map(item => {
+            const newItem = Object.assign({ isFavorited: !!favoritesKeyByComment[JSON.stringify(item._id)] }, item);
             if (item.createdBy) {
                 uids.push(item.createdBy);
             }
+            return newItem;
         })
         const users = await UserSchema.find({ uid: { $in: uids } }, 'uid realName');
         const userKeyByUid = users.reduce((x: any, y: User) => {
             x[y.uid] = y;
             return x;
         }, {});
-        return this._cascaderForComments(result, [], userKeyByUid);
+        return this._cascaderForComments(comments, [], userKeyByUid);
     }
 
     private _cascaderForComments(comments: CommentInterface[], result: any[], userKeyByUid: any) {
