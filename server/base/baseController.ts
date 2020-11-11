@@ -45,7 +45,7 @@ export class BaseController<T extends BaseService<BaseInterface>>{
         try {
             const query = Object.assign({}, ctx.query, ctx.params, ctx.request.body);
             const result = await this.service.getItem(query);
-            return ctx.body = {code: '000', data: result};
+            return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('get error:', err.message);
             return ctx.body = { code: '999', err };
@@ -56,19 +56,19 @@ export class BaseController<T extends BaseService<BaseInterface>>{
         try {
             const query = Object.assign({}, ctx.query, ctx.params, ctx.request.body);
             const result = await this.service.getList(query);
-            return ctx.body = {code: '000', list: result};
+            return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('get List error:', err.message);
             return ctx.body = { code: '999', err };
         }
     }
 
-    public async getListByPage (ctx: ParameterizedContext) {
+    public async getListByPage(ctx: ParameterizedContext) {
         try {
             const params = Object.assign({ page: 1, limit: 10 }, ctx.query, ctx.params, ctx.request.body);
             const query = Object.assign({}, params, { limit: undefined, page: undefined });
             const result = await this.service.getListByPage(query, params.limit, params.page);
-            return ctx.body = {code: '000', result};
+            return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('getListByPage error：', err.message);
             return ctx.body = { code: '999', err };
@@ -92,10 +92,10 @@ export class BaseController<T extends BaseService<BaseInterface>>{
             const query = Object.assign({}, ctx.params, ctx.query);
             const condition = Object.assign({}, ctx.request.body);
             const result = await this.service.findOneAndUpdateItem(ctx.user._id, query, condition);
-            return ctx.body = {code: '000', result};
+            return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.error('update item error：', err.message);
-            return ctx.body = {code: '999', err}
+            return ctx.body = { code: '999', err }
         }
     }
 }    

@@ -38,7 +38,7 @@ export default class ArticleController extends BaseController<ArticleService> {
                 projection += ' content isPublic '
             }
             const result = await this.service.getAticleDetail({ _id }, projection, true, this.populater);
-            return ctx.body = { code: '000', data: result };
+            return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('get error:', err.message);
             return ctx.body = { code: '999', err };

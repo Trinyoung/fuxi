@@ -20,7 +20,7 @@ export default class CommentController extends BaseController<CommentService> {
             const query = Object.assign({}, ctx.params);
             const uid = ctx.query.uid;
             const result = await this.service.getListForComments(query, uid, true);
-            return ctx.body = { code: '000', list: result };
+            return ctx.body = { code: '000', result: result };
         } catch (err) {
             Logger.info('get List error:', err.message);
             return ctx.body = { code: '999', err };
