@@ -124,6 +124,10 @@ export class ArticleService extends BaseService<ArticleInterface> {
     public async getNewArticles() {
 
     }
+
+    public async getArticleNums (uid:string) {
+        return await this.model.countDocuments({is_deleted: 0, createdBy: uid});
+    }
 }
 
 export const articleService = new ArticleService(); 

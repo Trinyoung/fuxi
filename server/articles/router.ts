@@ -18,6 +18,7 @@ export default (router: Router) => {
     const readController = new ReadController();
     const favoriteController = new FavoriteController();
     router.get('/articles/list', controller.getListByPage.bind(controller));
+    router.get('/articles/nums', controller.getArticleNums.bind(controller));
     router.get('/articles/:id', controller.getOne.bind(controller));
     router.get('/articles/:type/articles/list', controller.getListByPage.bind(controller));
 

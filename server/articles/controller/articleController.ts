@@ -92,4 +92,14 @@ export default class ArticleController extends BaseController<ArticleService> {
             return ctx.body = { code: '999', err };
         }
     }
+
+    public async getArticleNums (ctx: ParameterizedContext) {
+        try {
+            const {uid} = ctx.query.uid
+            const result = await this.service.getArticleNums(uid);
+            return ctx.body = {code: '000', result}
+        } catch (err) {
+            Logger.info('获取文章数量失败')
+        }
+    }
 }
