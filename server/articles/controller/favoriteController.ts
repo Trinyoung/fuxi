@@ -18,14 +18,12 @@ export default class FavoriteController extends BaseController<FavoriteService> 
 
     public async getNums(ctx: ParameterizedContext) {
         try {
-            console.log(ctx.query, '--------++++----->')
             const query = Object.assign({}, ctx.request.body, ctx.query);
-            console.log(query, '------------query')
             const result = await this.service.getNums(query);
-            return ctx.body = {code: '000', nums: result};
+            return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.error(`点赞计数出错:${err}`);
-            return ctx.body = { code: '999', err};
+            return ctx.body = { code: '999', err };
         }
     }
 }

@@ -42,7 +42,7 @@ export interface ArticleInterface extends BaseInterface, Document {
 
 export interface FavoriteInterface extends BaseInterface, Document {
     articleId?: Schema.Types.ObjectId,
-    uid?: String
+    authorUid?: String
 }
 
 export interface ArticleTypeInterface extends BaseInterface, Document {
@@ -57,7 +57,8 @@ export interface TagInterface extends BaseInterface, Document {
 }
 
 export interface ReadInterface extends BaseInterface, Document {
-    articleId: Schema.Types.ObjectId
+    articleId: Schema.Types.ObjectId,
+    authorUid: string
 }
 
 export interface CascaderTypeInterface {

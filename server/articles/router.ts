@@ -29,7 +29,7 @@ export default (router: Router) => {
     // router.get('/articles/recommend', controller.get)
 
     router.post('/articles/favorites', favoriteController.create.bind(favoriteController));
-    router.get('/articles/favorites/articleteId', favoriteController.getOne.bind(favoriteController));
+    router.get('/articles/favorites/:articleteId', favoriteController.getOne.bind(favoriteController));
     router.get('/aritcles/favorites/nums', favoriteController.getNums.bind(favoriteController))
     router.delete('/articles/favorites/:favoriteId', favoriteController.delete.bind(favoriteController));
 }

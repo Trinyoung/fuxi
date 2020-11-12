@@ -13,6 +13,7 @@ import { ReadInterface } from '../interface';
 const ReaderSchema = new Schema({
     createdAt: { type: Number, required: true },
     articleId: { type: Schema.Types.ObjectId, required: true },
+    authorUid: { type: String, required: true },
     is_deleted: { type: Number, required: true, default: 0 }
 });
 

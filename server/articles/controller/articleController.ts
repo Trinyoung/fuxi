@@ -40,7 +40,7 @@ export default class ArticleController extends BaseController<ArticleService> {
             const result = await this.service.getAticleDetail({ _id }, projection, true, this.populater);
             return ctx.body = { code: '000', result };
         } catch (err) {
-            Logger.info('get error:', err.message);
+            Logger.error('get error:', err.message);
             return ctx.body = { code: '999', err };
         }
     }
@@ -59,12 +59,12 @@ export default class ArticleController extends BaseController<ArticleService> {
             const result = await this.service.getListByPageForAriticle(query, Number(page), limit, projection, this.populater);
             return ctx.body = { code: '000', result };
         } catch (err) {
-            Logger.info('获取文章列表失败', err.message);
+            Logger.error('获取文章列表失败', err.message);
             return ctx.body = { code: '999', err };
         }
     }
 
-    public async getListByPageForAriticle (ctx: ParameterizedContext) {
+    public async getListByPageForAriticle(ctx: ParameterizedContext) {
         try {
             const { page, limit, type, category, keyword } = ctx.query;
             let query: FilterQuery<ArticleInterface>;
@@ -93,13 +93,15 @@ export default class ArticleController extends BaseController<ArticleService> {
         }
     }
 
-    public async getArticleNums (ctx: ParameterizedContext) {
+    public async getArticleNums(ctx: ParameterizedContext) {
         try {
-            const {uid} = ctx.query.uid
-            const result = await this.service.getArticleNums(uid);
-            return ctx.body = {code: '000', result}
+            const { createdBy } = ctx.query
+            const result = await this.service.getArticleNums(createdBy);
+            console.log(result, 'result==================>')
+            return ctx.body = { code: '000', result }
         } catch (err) {
-            Logger.info('获取文章数量失败')
+            Logger.error('获取文章数量失败', err.message)
+            return ctx.body = {code: '999', message: err.message}
         }
     }
 }

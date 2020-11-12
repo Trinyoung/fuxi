@@ -11,4 +11,5 @@ import UserController from './controller';
 import * as Router from 'koa-router';
 export default (router: Router) => {
   let controller = new UserController();
+  router.get('/user/userInfo', controller.getUserInfo.bind(controller));
 }

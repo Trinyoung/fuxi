@@ -111,13 +111,13 @@ export class ArticleService extends BaseService<ArticleInterface> {
         // 排列的顺序是
         favoriteModel.aggregate([
             { match: { is_deleted: 0 } },
-            { group: { _id: '$articleId', createdAt: {$push: '$createdAt'}, total: {$sum: 1}} },
-            { match: {}}
+            { group: { _id: '$articleId', createdAt: { $push: '$createdAt' }, total: { $sum: 1 } } },
+            { match: {} }
         ]);
 
         ReadModel.aggregate([
-            { match: { is_deleted: 0} },
-            { group: {_id: '$articleId', createdAt: '$createdAt'}}
+            { match: { is_deleted: 0 } },
+            { group: { _id: '$articleId', createdAt: '$createdAt' } }
         ]);
     }
 
@@ -125,8 +125,11 @@ export class ArticleService extends BaseService<ArticleInterface> {
 
     }
 
-    public async getArticleNums (uid:string) {
-        return await this.model.countDocuments({is_deleted: 0, createdBy: uid});
+    public async getArticleNums(createdBy: string) {
+        const articleNums = await this.model.countDocuments({ is_deleted: 0, createdBy });
+        const readsNums = await ReadModel.countDocuments({ is_deleted: 0, authorUid: createdBy });
+        const favoriteNums = await favoriteModel.countDocuments({ is_deleted: 0, authorUid: createdBy });
+        return { articleNums, readsNums, favoriteNums };
     }
 }
 

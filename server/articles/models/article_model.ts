@@ -24,6 +24,7 @@ const ArticleSchema = new Schema({
     tags: [{ type: Schema.Types.ObjectId, ref: 'tag' }],
     is_deleted: { type: Number, default: 0 },
     hasReads: { type: Number, default: 0 },
+    favoriteNums: { type: Number, default: 0 },
     isMarkdown: { type: Number, enum: [0, 1], default: 1 },
     subtitle: String,
     content: String,

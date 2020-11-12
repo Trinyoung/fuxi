@@ -33,9 +33,9 @@ export class BaseController<T extends BaseService<BaseInterface>>{
             const { body } = ctx.request;
             const user = ctx.user;
             await this.service.updateItem(body, { is_deleted: 1 });
-            return ctx.body = { code: '000', message: '删除成功' };
+            return ctx.body = { code: '000', result: '删除成功' };
         } catch (err) {
-            Logger.info('update Error:', err.message);
+            Logger.error('update Error:', err.message);
             return ctx.body = { code: '999', err };
         }
 
@@ -47,7 +47,7 @@ export class BaseController<T extends BaseService<BaseInterface>>{
             const result = await this.service.getItem(query);
             return ctx.body = { code: '000', result };
         } catch (err) {
-            Logger.info('get error:', err.message);
+            Logger.error('get error:', err.message);
             return ctx.body = { code: '999', err };
         }
     }
@@ -58,7 +58,7 @@ export class BaseController<T extends BaseService<BaseInterface>>{
             const result = await this.service.getList(query);
             return ctx.body = { code: '000', result };
         } catch (err) {
-            Logger.info('get List error:', err.message);
+            Logger.error('get List error:', err.message);
             return ctx.body = { code: '999', err };
         }
     }
@@ -70,7 +70,7 @@ export class BaseController<T extends BaseService<BaseInterface>>{
             const result = await this.service.getListByPage(query, params.limit, params.page);
             return ctx.body = { code: '000', result };
         } catch (err) {
-            Logger.info('getListByPage error：', err.message);
+            Logger.error('getListByPage error：', err.message);
             return ctx.body = { code: '999', err };
         }
     }

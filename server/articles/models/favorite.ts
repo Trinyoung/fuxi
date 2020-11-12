@@ -13,8 +13,8 @@ import { FavoriteInterface } from '../interface';
 
 const favoriteSchema = new Schema({
     createdAt: { type: Number, required: true },
-    articleId: { type: Schema.Types.ObjectId },
-    favoriteNums: { type: Number, default: 0 },
+    articleId: { type: Schema.Types.ObjectId, required: true },
+    authorUid: { type: String, required: true },
     createdBy: { type: String },
     is_deleted: { type: Number, required: true, default: 0 }
 });
