@@ -72,7 +72,6 @@ export class ArticleService extends BaseService<ArticleInterface> {
             }
             return x;
         }, {});
-        console.log()
         const resArr = result.docs.map(item => {
             const obj: any = Object.assign({}, item);
             obj.isNew = item.createdAt > InAweek;

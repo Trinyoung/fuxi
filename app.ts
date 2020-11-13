@@ -25,7 +25,7 @@ app
 	
 
 app.on('err', function (err) {
-	console.log(err);
+	Logger.error(err.message);
 });
 
 app.listen(9221, () => {

@@ -97,7 +97,6 @@ export default class ArticleController extends BaseController<ArticleService> {
         try {
             const { createdBy } = ctx.query
             const result = await this.service.getArticleNums(createdBy);
-            console.log(result, 'result==================>')
             return ctx.body = { code: '000', result }
         } catch (err) {
             Logger.error('获取文章数量失败', err.message)

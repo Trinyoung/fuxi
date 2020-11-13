@@ -37,7 +37,7 @@ export async function getTagsFromCache(ctx: ParameterizedContext, next: Next) {
     ctx.cookies.set('tagKey', 'luqingyang', {expires: new Date(expireTime), httpOnly: true});
     tagkey = ctx.cookies.get('tagKey');
     cacheHelper.put('tags', tagkey, ctx.body.list, res => {
-        console.log(res, '---------------->')
+        // console.log(res, '---------------->')
     });
 };
 
