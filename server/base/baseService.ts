@@ -72,7 +72,6 @@ export class BaseService<T extends BaseInterface> {
     }
 
     public async updateItemWithoutUid(query: FilterQuery<T>, condition: UpdateQuery<T>, options?: ModelUpdateOptions): Promise<T> {
-        // condition.updatedAt = moment().unix();
         const result = await this.model.findOneAndUpdate(query, condition, options);
         return result;
     }

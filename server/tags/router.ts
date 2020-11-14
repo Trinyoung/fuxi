@@ -13,4 +13,5 @@ import { getTagsFromCache } from './middleware';
 export default (router: Router) => {
     const controller = new Controller();
     router.get('/tags', controller.getList.bind(controller));
+    router.delete('/tags/:id')
 }
