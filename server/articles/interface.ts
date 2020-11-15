@@ -40,8 +40,8 @@ export interface ArticleInterface extends BaseInterface, Document {
     favorites?: number
 }
 
-export interface FavoriteInterface extends BaseInterface, Document {
-    articleId?: Schema.Types.ObjectId,
+export interface FavoriteInterface extends ArticleBaseInterface {
+    // articleId: Schema.Types.ObjectId,
     authorUid?: String
 }
 
@@ -56,11 +56,13 @@ export interface TagInterface extends BaseInterface, Document {
     name: string
 }
 
-export interface ReadInterface extends BaseInterface, Document {
+export interface ReadInterface extends ArticleBaseInterface {
     articleId: Schema.Types.ObjectId,
     authorUid: string
 }
-
+export interface ArticleBaseInterface extends BaseInterface, Document {
+    articleId?: Schema.Types.ObjectId,
+}
 export interface CascaderTypeInterface {
     label: string,
     // value: Schema.Types.ObjectId,

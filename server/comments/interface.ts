@@ -1,6 +1,7 @@
 import { BaseInterface, YesOrNo } from '../base/baseInterface';
 import { Schema, Document } from 'mongoose';
-export interface CommentInterface extends BaseInterface, Document {
+import { ArticleBaseInterface } from '../articles/interface';
+export interface CommentInterface extends ArticleBaseInterface {
     articleId?: Schema.Types.ObjectId,
     content?: string,
     favoriteNum?: number,
@@ -13,5 +14,5 @@ export interface CommentInterface extends BaseInterface, Document {
 
 export interface CommentFavoriteInterface extends BaseInterface, Document {
     commentId: Schema.Types.ObjectId,
-    uid?: string
+    createdBy?: string
 }

@@ -77,10 +77,6 @@ export default class ArticleController extends BaseController<ArticleService> {
             const projection = '';
             let populater: populateInterface[] = [
                 {
-                    path: 'createdBy',
-                    select: 'realName uid',
-                },
-                {
                     path: 'type',
                     select: 'title typeCode'
                 }
@@ -100,7 +96,18 @@ export default class ArticleController extends BaseController<ArticleService> {
             return ctx.body = { code: '000', result }
         } catch (err) {
             Logger.error('获取文章数量失败', err.message)
-            return ctx.body = {code: '999', message: err.message}
+            return ctx.body = { code: '999', message: err.message }
+        }
+    }
+
+    public async getHotArticles(ctx: ParameterizedContext) {
+        try {
+            const authorUid = ctx.query.authorUid;
+            const result = await this.service.getHotAticles(authorUid);
+            return ctx.body = { code: '000', result };
+        } catch (err) {
+            Logger.error('获取文章数量失败', err.message);
+            return ctx.body = { code: '999', message: err.message };
         }
     }
 }

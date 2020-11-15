@@ -17,10 +17,11 @@ export default (router: Router) => {
     const typeController = new TypeController();
     const readController = new ReadController();
     const favoriteController = new FavoriteController();
-    router.get('/articles/list', controller.getListByPage.bind(controller));
+    router.get('/articles/list', controller.getListByPageForAriticle.bind(controller));
     router.get('/articles/nums', controller.getArticleNums.bind(controller));
     router.get('/articles/:id', controller.getOne.bind(controller));
     router.get('/articles/:type/articles/list', controller.getListByPage.bind(controller));
+    router.get('/articles/list/hot', controller.getHotArticles.bind(controller));
 
     router.get('/articles/types/list', typeController.getListByPage.bind(typeController));
     router.get('/articles/types/all', typeController.cascaderForTypes.bind(typeController));

@@ -23,3 +23,7 @@ export enum YesOrNo {
   NO = 0,
   Yes = 1
 }
+
+// export interface keyOf {
+//   [string]: 
+// }
