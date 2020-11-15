@@ -1,24 +1,13 @@
-/*
- * @Author: Trinyoung.Lu
- * @Date: 2020-09-11 16:27:17
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-19 16:16:57
- * @PageTitle: XXX页面
- * @Description: XXX
- * @FilePath: \fuxi\server\articles\service\article.ts
- */
 import { BaseService } from "../../base/baseService"
 import { ArticleModel } from '../models/article_model';
 import { ReadModel } from '../models/reader';
-import { ArticleInterface, ReadInterface, ArticleBaseInterface, FavoriteInterface } from '../interface';
-import { BaseInterface, populateInterface } from '../../base/baseInterface';
-// import { User } from '../../user/userInterface';
+import { ArticleInterface, ArticleBaseInterface } from '../interface';
+import { populateInterface } from '../../base/baseInterface';
 import * as moment from 'moment';
-import { FilterQuery, PaginateResult, UpdateQuery } from "mongoose";
+import { FilterQuery } from "mongoose";
 import { UserSchema } from "../../user/models/user";
 import { favoriteModel } from "../models/favorite";
 import { commentModel } from "../../comments/models/commentModel";
-// import { TagModel } from "server/tags/model";
 export class ArticleService extends BaseService<ArticleInterface> {
     constructor() {
         super(ArticleModel);
@@ -67,20 +56,53 @@ export class ArticleService extends BaseService<ArticleInterface> {
     }
 
     public async getHotAticles(authorUid: string) {
-        //  一周内点赞数超过10， 一个月内超过20；是否热门的判断标准是 近一周之内 访问量超过 50, 一个月内超过100；
-        // 排列的顺序是
-        const result = await Promise.all([
+        // 排列的顺序是 热度值高的排前;
+        const [favorites, reads, comments] = await Promise.all([
             favoriteModel.aggregate([
+                { $match: { is_deleted: 0, authorUid, createdAt: { $gt: moment().subtract(1, 'M').unix() } } },
+                { $group: { _id: '$articleId', createdAt: { $push: '$createdAt' }, total: { $sum: 2 } } },
+                {
+                    $lookup: {
+                        from: 'articles',
+                        localField: '_id',
+                        foreignField: '_id',
+                        as: 'articleInfo'
+                    }
+                },
+                { $unwind: '$articleInfo' },
+                {
+                    $project: {
+                        'articleInfo.title': 1,
+                        'articleInfo.createdBy': 1,
+                        createdAt: 1,
+                        total: 1
+                    }
+                }
+            ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) }),
+            ReadModel.aggregate([
                 { $match: { is_deleted: 0, authorUid, createdAt: { $gt: moment().subtract(1, 'M').unix() } } },
                 { $group: { _id: '$articleId', createdAt: { $push: '$createdAt' }, total: { $sum: 1 } } },
                 {
                     $lookup: {
-                        from: 'readers',
+                        from: 'articles',
                         localField: '_id',
-                        foreignField: 'articleId',
-                        as: 'readList'
+                        foreignField: '_id',
+                        as: 'articleInfo'
                     }
                 },
+                { $unwind: '$articleInfo' },
+                {
+                    $project: {
+                        'articleInfo.title': 1,
+                        'articleInfo.createdBy': 1,
+                        createdAt: 1,
+                        total: 1
+                    }
+                }
+            ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) }),
+            commentModel.aggregate([
+                { $match: { is_deleted: 0, authorUid, createdAt: { $gt: moment().subtract(1, 'M').unix() } } },
+                { $group: { _id: '$articleId', createdAt: { $push: '$createdAt' }, total: { $sum: 2 } } },
                 {
                     $lookup: {
                         from: 'articles',
@@ -90,7 +112,6 @@ export class ArticleService extends BaseService<ArticleInterface> {
                     }
                 },
                 { $unwind: '$articleInfo' },
-                { $match: { total: { $gt: 10 } } },
                 {
                     $project: {
                         'articleInfo.title': 1,
@@ -99,35 +120,16 @@ export class ArticleService extends BaseService<ArticleInterface> {
                         total: 1
                     }
                 }
-            ]),
-            favoriteModel.aggregate([
-                { $match: { is_deleted: 0, createdAt: { $gt: moment().subtract(1, 'M').unix() } } },
-                { $group: { _id: '$articleId', createdAt: { $push: '$createdAt' }, total: { $sum: 1 } } },
-                {
-                    $lookup: {
-                        from: 'articles',
-                        localField: '_id',
-                        foreignField: '_id',
-                        as: 'articleInfo'
-                    }
-                },
-                { $unwind: '$articleInfo' },
-                // { $match: { total: { $gt: 2 } } },
-                {
-                    $project: {
-                        'articleInfo.title': 1,
-                        'articleInfo.createdBy': 1,
-                        createdAt: 1,
-                        total: 1
-                    }
-                }
-            ])
+            ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) })
         ]);
-        return result;
+        for (let key in favorites) {
+            
+        }
+        return { favorites, reads, comments };
     }
 
-    public async getNewArticles() {
-
+    public async getNewArticles(createdBy: string, page: number, limit: number, projection: string) {
+        this.getListByPage({ createdBy, is_deleted: 0 }, page, limit, projection, null, { createdAt: -1 });
     }
     private objKeyByArticle<T extends ArticleBaseInterface>(arr: T[]) {
         const InAweek = moment().subtract(1, 'week').unix();
@@ -151,7 +153,12 @@ export class ArticleService extends BaseService<ArticleInterface> {
             return x;
         }, {});
     }
-    
+    private hotItemKeyByArticle (arr:any[]) {
+        return arr.reduce((x:any, y:any) => {
+            x[JSON.stringify(y._id)] = y;
+            return x;
+        }, {})
+    }
     public async getArticleNums(createdBy: string) {
         const articleNums = await this.model.countDocuments({ is_deleted: 0, createdBy });
         const readsNums = await ReadModel.countDocuments({ is_deleted: 0, authorUid: createdBy });

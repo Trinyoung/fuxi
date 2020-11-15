@@ -12,6 +12,7 @@ const commentSchema = new Schema({
     isTop: { type: Number, enum: [0, 1], default: 1 },
     createdAt: { type: Number, required: true },
     articleId: { type: Schema.Types.ObjectId, required: true },
+    authorUid: { type: String, required: true }, // 文章作者的uid
     createdBy: { type: String },
     is_deleted: { type: Number, required: true, default: 0 }
 });

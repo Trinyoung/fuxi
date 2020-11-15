@@ -9,6 +9,7 @@ export interface CommentInterface extends ArticleBaseInterface {
     parent: Schema.Types.ObjectId,
     nilName?: string,
     email?: string,
+    authorUid?: string,
     reply?: Schema.Types.ObjectId
 }
 

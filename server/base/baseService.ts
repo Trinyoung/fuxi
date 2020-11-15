@@ -35,12 +35,13 @@ export class BaseService<T extends BaseInterface> {
         return result;
     }
 
-    public async getListByPage(query: FilterQuery<T>, page = 1, limit = 10, projection?: string, populate?: string | populateInterface | string[] | populateInterface[]): Promise<PaginateResult<T>> {
+    public async getListByPage(query: FilterQuery<T>, page = 1, limit = 10, projection?: string, populate?: string | populateInterface | string[] | populateInterface[], sort?: Object| string): Promise<PaginateResult<T>> {
         let options: PaginateOptions;
         query = this._fullQuery(query);
         options = {
             lean: true,
             limit,
+            sort,
             page,
             select: projection,
             populate: populate
