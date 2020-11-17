@@ -4,10 +4,11 @@ import { ReadModel } from '../models/reader';
 import { ArticleInterface, ArticleBaseInterface } from '../interface';
 import { populateInterface } from '../../base/baseInterface';
 import * as moment from 'moment';
-import { FilterQuery } from "mongoose";
+import { FilterQuery, Schema } from "mongoose";
 import { UserSchema } from "../../user/models/user";
 import { favoriteModel } from "../models/favorite";
 import { commentModel } from "../../comments/models/commentModel";
+import { isTemplateExpression } from "typescript";
 export class ArticleService extends BaseService<ArticleInterface> {
     constructor() {
         super(ArticleModel);
@@ -121,7 +122,12 @@ export class ArticleService extends BaseService<ArticleInterface> {
                 }
             ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) })
         ]);
-        const result = [];
+        const result: {
+            hotPoint: number,
+            _id: Schema.Types.ObjectId,
+            title: string,
+            authorUid: string
+        }[] = [];
         const InAweek = moment().subtract(1, "w").unix();
         const InAMonth = moment().subtract(1, 'M').unix();
         for (let key in reads) {
@@ -140,22 +146,44 @@ export class ArticleService extends BaseService<ArticleInterface> {
                         favoritePoint += 2;
                     }
                     if (item > InAMonth && item < InAweek) {
-                        favoritePoint ++;
+                        favoritePoint++;
                     }
                 });
             }
             if (comments[key]) {
                 comments[key].createdAt.forEach((item: number) => {
                     if (item > InAweek) {
-                        commentPoint ++;
+                        commentPoint++;
                     }
                     if (item > InAMonth && item < InAweek) {
-                        commentPoint ++;
+                        commentPoint++;
                     }
                 });
             }
+            const hotPoint = readPoint + favoritePoint + commentPoint;
+            if (result.length === 0) {
+                result.push({
+                    hotPoint,
+                    _id: reads[key]._id,
+                    title: reads[key].articleInfo.title,
+                    authorUid: reads[key].articleInfo.createdBy
+                });
+            } else {
+                for (let i = 0; i < result.length; i++) {
+                    if (hotPoint > result[i].hotPoint) {
+                        result.splice(i, 1, {
+                            hotPoint,
+                            _id: reads[key]._id,
+                            title: reads[key].articleInfo.title,
+                            authorUid: reads[key].articleInfo.createdBy
+                        });
+                    }
+                }
+            }
+
+            
         }
-        return { favorites, reads, comments };
+        return result;
     }
 
     public async getNewArticles(createdBy: string, page: number, limit: number, projection: string) {
