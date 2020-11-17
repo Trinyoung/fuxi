@@ -38,8 +38,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
                 comments: commentObj.total,
                 createdBy: authorKeyByUid[item.createdBy],
                 isNew: item.createdAt > InAweek,
-                isHot: (readsObj.weekNums + favoriteObj.weekNums * 2 + commentObj.weekNums * 2) > 100 ||
-                    (readsObj.monthNums + favoriteObj.monthNums * 2 + commentObj.monthNums * 2) > 200
+                isHot: (readsObj.weekNums + favoriteObj.weekNums * 2 + commentObj.weekNums * 2 + readsObj.monthNums * 0.5 + favoriteObj.monthNums * 1.5 + commentObj.monthNums * 1.5) > 150
             });
         });
         return Object.assign({ docs: resArr }, result);
@@ -122,8 +121,39 @@ export class ArticleService extends BaseService<ArticleInterface> {
                 }
             ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) })
         ]);
-        for (let key in favorites) {
-            
+        const result = [];
+        const InAweek = moment().subtract(1, "w").unix();
+        const InAMonth = moment().subtract(1, 'M').unix();
+        for (let key in reads) {
+            let [readPoint, favoritePoint, commentPoint] = [0, 0, 0];
+            reads[key].createdAt.forEach((item: number) => {
+                if (item > InAweek) {
+                    readPoint++;
+                }
+                if (item > InAMonth && item < InAweek) {
+                    readPoint++;
+                }
+            });
+            if (favorites[key]) {
+                favorites[key].createdAt.forEach((item: number) => {
+                    if (item > InAweek) {
+                        favoritePoint += 2;
+                    }
+                    if (item > InAMonth && item < InAweek) {
+                        favoritePoint ++;
+                    }
+                });
+            }
+            if (comments[key]) {
+                comments[key].createdAt.forEach((item: number) => {
+                    if (item > InAweek) {
+                        commentPoint ++;
+                    }
+                    if (item > InAMonth && item < InAweek) {
+                        commentPoint ++;
+                    }
+                });
+            }
         }
         return { favorites, reads, comments };
     }
@@ -147,14 +177,14 @@ export class ArticleService extends BaseService<ArticleInterface> {
             if (y.createdAt > InAweek) {
                 x[JSON.stringify(y.articleId)].weekNums++;
             }
-            if (y.createdAt > InAMonth) {
+            if (y.createdAt > InAMonth && y.createdAt < InAweek) {
                 x[JSON.stringify(y.articleId)].monthNums++;
             }
             return x;
         }, {});
     }
-    private hotItemKeyByArticle (arr:any[]) {
-        return arr.reduce((x:any, y:any) => {
+    private hotItemKeyByArticle(arr: any[]) {
+        return arr.reduce((x: any, y: any) => {
             x[JSON.stringify(y._id)] = y;
             return x;
         }, {})
