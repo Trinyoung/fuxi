@@ -125,7 +125,6 @@ export class ArticleService extends BaseService<ArticleInterface> {
                 }
             ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) })
         ]);
-        console.log(reads, 'reads--------------------> ')
         let result: {
             hotPoint: number,
             _id: Schema.Types.ObjectId,
