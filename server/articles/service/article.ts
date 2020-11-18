@@ -74,6 +74,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
                     $project: {
                         'articleInfo.title': 1,
                         'articleInfo.createdBy': 1,
+                        'articleInfo.createdAt': 1,
                         createdAt: 1,
                         total: 1
                     }
@@ -95,6 +96,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
                     $project: {
                         'articleInfo.title': 1,
                         'articleInfo.createdBy': 1,
+                        'articleInfo.createdAt': 1,
                         createdAt: 1,
                         total: 1
                     }
@@ -116,17 +118,20 @@ export class ArticleService extends BaseService<ArticleInterface> {
                     $project: {
                         'articleInfo.title': 1,
                         'articleInfo.createdBy': 1,
+                        'articleInfo.createdAt': 1,
                         createdAt: 1,
                         total: 1
                     }
                 }
             ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) })
         ]);
+        console.log(reads, 'reads--------------------> ')
         let result: {
             hotPoint: number,
             _id: Schema.Types.ObjectId,
             title: string,
-            authorUid: string
+            authorUid: string,
+            createdAt: number
         }[] = [];
         const InAweek = moment().subtract(1, "w").unix();
         const InAMonth = moment().subtract(1, 'M').unix();
@@ -167,7 +172,8 @@ export class ArticleService extends BaseService<ArticleInterface> {
                         hotPoint,
                         _id: reads[key]._id,
                         title: reads[key].articleInfo.title,
-                        authorUid: reads[key].articleInfo.createdBy
+                        authorUid: reads[key].articleInfo.createdBy,
+                        createdAt: reads[key].articleInfo.createdAt
                     });
                     break;
                 }
@@ -176,7 +182,8 @@ export class ArticleService extends BaseService<ArticleInterface> {
                         hotPoint,
                         _id: reads[key]._id,
                         title: reads[key].articleInfo.title,
-                        authorUid: reads[key].articleInfo.createdBy
+                        authorUid: reads[key].articleInfo.createdBy,
+                        createdAt: reads[key].articleInfo.createdAt
                     });
                     result = result.concat(splitArr);
                     if (result.length > 5) {
