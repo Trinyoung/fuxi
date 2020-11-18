@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-20 10:51:25
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-18 10:23:56
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\router.ts
@@ -22,6 +22,7 @@ export default (router: Router) => {
     router.get('/articles/:id', controller.getOne.bind(controller));
     router.get('/articles/:type/articles/list', controller.getListByPage.bind(controller));
     router.get('/articles/list/hot', controller.getHotArticles.bind(controller));
+    router.get('/articles/list/new', controller.getNewArticles.bind(controller));
 
     router.get('/articles/types/list', typeController.getListByPage.bind(typeController));
     router.get('/articles/types/all', typeController.cascaderForTypes.bind(typeController));

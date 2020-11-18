@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-05 18:45:01
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-18 10:23:05
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\articleController.ts
@@ -106,8 +106,18 @@ export default class ArticleController extends BaseController<ArticleService> {
             const result = await this.service.getHotAticles(authorUid);
             return ctx.body = { code: '000', result };
         } catch (err) {
-            Logger.error('获取文章数量失败', err.message);
+            Logger.error('获取热门文章失败', err.message);
             return ctx.body = { code: '999', message: err.message };
+        }
+    }
+
+    public async getNewArticles(ctx: ParameterizedContext) {
+        try {
+            const result = await this.service.getNewArticles(ctx.query.createdBy, 1, 5, 'title createdBy createdAt');
+            return ctx.body = { code: '000', result };
+        } catch (err) {
+            Logger.error('获取最新文章失败', err.message);
+            return ctx.body = { code: '000', message: err.message }
         }
     }
 }

@@ -122,7 +122,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
                 }
             ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) })
         ]);
-        const result: {
+        let result: {
             hotPoint: number,
             _id: Schema.Types.ObjectId,
             title: string,
@@ -161,33 +161,36 @@ export class ArticleService extends BaseService<ArticleInterface> {
                 });
             }
             const hotPoint = readPoint + favoritePoint + commentPoint;
-            if (result.length === 0) {
-                result.push({
-                    hotPoint,
-                    _id: reads[key]._id,
-                    title: reads[key].articleInfo.title,
-                    authorUid: reads[key].articleInfo.createdBy
-                });
-            } else {
-                for (let i = 0; i < result.length; i++) {
-                    if (hotPoint > result[i].hotPoint) {
-                        result.splice(i, 1, {
-                            hotPoint,
-                            _id: reads[key]._id,
-                            title: reads[key].articleInfo.title,
-                            authorUid: reads[key].articleInfo.createdBy
-                        });
+            for (let i = 0; i < 5; i++) {
+                if (!result[i]) {
+                    result.push({
+                        hotPoint,
+                        _id: reads[key]._id,
+                        title: reads[key].articleInfo.title,
+                        authorUid: reads[key].articleInfo.createdBy
+                    });
+                    break;
+                }
+                if (hotPoint > result[i].hotPoint) {
+                    const splitArr = result.splice(i, result.length - i, {
+                        hotPoint,
+                        _id: reads[key]._id,
+                        title: reads[key].articleInfo.title,
+                        authorUid: reads[key].articleInfo.createdBy
+                    });
+                    result = result.concat(splitArr);
+                    if (result.length > 5) {
+                        result.pop();
                     }
+                    break;
                 }
             }
-
-            
         }
         return result;
     }
 
     public async getNewArticles(createdBy: string, page: number, limit: number, projection: string) {
-        this.getListByPage({ createdBy, is_deleted: 0 }, page, limit, projection, null, { createdAt: -1 });
+       return await this.getListByPage({ createdBy, is_deleted: 0 }, page, limit, projection, null, { createdAt: -1 });
     }
     private objKeyByArticle<T extends ArticleBaseInterface>(arr: T[]) {
         const InAweek = moment().subtract(1, 'week').unix();
