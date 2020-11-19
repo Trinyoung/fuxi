@@ -8,7 +8,6 @@ import { FilterQuery, Schema } from "mongoose";
 import { UserSchema } from "../../user/models/user";
 import { favoriteModel } from "../models/favorite";
 import { commentModel } from "../../comments/models/commentModel";
-import { isTemplateExpression } from "typescript";
 export class ArticleService extends BaseService<ArticleInterface> {
     constructor() {
         super(ArticleModel);
