@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-12 20:53:18
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-05 18:42:24
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-20 09:19:15
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\models\article_model.ts
@@ -36,7 +36,12 @@ const ArticleSchema = new Schema({
     updatedBy: { type: String },
     sourceUrl: String
 });
-
+ArticleSchema.virtual('author', {
+    ref: 'user',
+    localField: 'createdBy',
+    foreignField: 'uid',
+    justOne: true
+});
 ArticleSchema.plugin(mongoosePaginate);
 ArticleSchema.plugin(uniqueValidator);
 export const ArticleModel: PaginateModel<ArticleInterface> = db('article', ArticleSchema);

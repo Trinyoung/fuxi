@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-18 10:23:05
+ * @LastEditTime: 2020-11-20 09:19:31
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\articleController.ts
@@ -76,6 +76,10 @@ export default class ArticleController extends BaseController<ArticleService> {
             }
             const projection = '';
             let populater: populateInterface[] = [
+                {
+                    path: 'author',
+                    select: 'realName username uid'
+                },
                 {
                     path: 'type',
                     select: 'title typeCode'

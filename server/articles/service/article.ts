@@ -14,15 +14,9 @@ export class ArticleService extends BaseService<ArticleInterface> {
     }
 
     public async getListByPageForAriticle(query: FilterQuery<ArticleInterface>, page = 1, limit = 10, projection?: string, populate?: string | string[] | populateInterface | populateInterface[]) {
-        const result = await this.getListByPage(query, page, limit, projection, populate);
+        const result = await this.getListByPage(query, page, limit, projection, populate, { createdAt: -1 });
         const InAweek = moment().subtract(1, 'week').unix();
         const ids = result.docs.map(item => item._id);
-        const uids = result.docs.map(item => item.createdBy);
-        const authors = await UserSchema.find({ uid: { $in: uids } }, 'realName uid');
-        const authorKeyByUid = authors.reduce((x: any, y) => {
-            x[y.uid] = y.realName;
-            return x;
-        }, {});
         const [readsKeyByArticle, favoriteKeyByArticle, commentKeyByArticle] = await Promise.all([
             ReadModel.find({ articleId: { $in: ids } }).then(res => { return Promise.resolve(this.objKeyByArticle(res)) }),
             favoriteModel.find({ articleId: { $in: ids } }).then(res => { return Promise.resolve(this.objKeyByArticle(res)) }),
@@ -36,7 +30,6 @@ export class ArticleService extends BaseService<ArticleInterface> {
                 hasReads: readsObj.total,
                 favorites: favoriteObj.total,
                 comments: commentObj.total,
-                createdBy: authorKeyByUid[item.createdBy],
                 isNew: item.createdAt > InAweek,
                 isHot: (readsObj.weekNums + favoriteObj.weekNums * 2 + commentObj.weekNums * 2 + readsObj.monthNums * 0.5 + favoriteObj.monthNums * 1.5 + commentObj.monthNums * 1.5) > 150
             });
@@ -54,7 +47,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
         return res;
     }
 
-    public async getHotAticles(authorUid: string) {
+    public async getHotAticles(authorUid?: string) {
         // 排列的顺序是 热度值高的排前;
         const [favorites, reads, comments] = await Promise.all([
             favoriteModel.aggregate([
@@ -78,7 +71,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
                         total: 1
                     }
                 }
-            ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) }),
+            ]).then(res => { return this.hotItemKeyByArticle(res) }),
             ReadModel.aggregate([
                 { $match: { is_deleted: 0, authorUid, createdAt: { $gt: moment().subtract(1, 'M').unix() } } },
                 { $group: { _id: '$articleId', createdAt: { $push: '$createdAt' }, total: { $sum: 1 } } },
@@ -100,7 +93,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
                         total: 1
                     }
                 }
-            ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) }),
+            ]).then(res => { return this.hotItemKeyByArticle(res) }),
             commentModel.aggregate([
                 { $match: { is_deleted: 0, authorUid, createdAt: { $gt: moment().subtract(1, 'M').unix() } } },
                 { $group: { _id: '$articleId', createdAt: { $push: '$createdAt' }, total: { $sum: 2 } } },
@@ -122,8 +115,9 @@ export class ArticleService extends BaseService<ArticleInterface> {
                         total: 1
                     }
                 }
-            ]).then(res => { return Promise.resolve(this.hotItemKeyByArticle(res)) })
+            ]).then(res => { return this.hotItemKeyByArticle(res) })
         ]);
+        console.log(reads, '---------------------->reads')
         let result: {
             hotPoint: number,
             _id: Schema.Types.ObjectId,
@@ -195,7 +189,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
     }
 
     public async getNewArticles(createdBy: string, page: number, limit: number, projection: string) {
-       return await this.getListByPage({ createdBy, is_deleted: 0 }, page, limit, projection, null, { createdAt: -1 });
+        return await this.getListByPage({ createdBy, is_deleted: 0 }, page, limit, projection, null, { createdAt: -1 });
     }
     private objKeyByArticle<T extends ArticleBaseInterface>(arr: T[]) {
         const InAweek = moment().subtract(1, 'week').unix();
