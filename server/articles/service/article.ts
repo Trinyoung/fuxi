@@ -117,7 +117,6 @@ export class ArticleService extends BaseService<ArticleInterface> {
                 }
             ]).then(res => { return this.hotItemKeyByArticle(res) })
         ]);
-        console.log(reads, '---------------------->reads')
         let result: {
             hotPoint: number,
             _id: Schema.Types.ObjectId,
@@ -191,6 +190,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
     public async getNewArticles(createdBy: string, page: number, limit: number, projection: string) {
         return await this.getListByPage({ createdBy, is_deleted: 0 }, page, limit, projection, null, { createdAt: -1 });
     }
+
     private objKeyByArticle<T extends ArticleBaseInterface>(arr: T[]) {
         const InAweek = moment().subtract(1, 'week').unix();
         const InAMonth = moment().subtract(1, "M").unix();
@@ -213,17 +213,48 @@ export class ArticleService extends BaseService<ArticleInterface> {
             return x;
         }, {});
     }
+
     private hotItemKeyByArticle(arr: any[]) {
         return arr.reduce((x: any, y: any) => {
             x[JSON.stringify(y._id)] = y;
             return x;
         }, {})
     }
+
     public async getArticleNums(createdBy: string) {
         const articleNums = await this.model.countDocuments({ is_deleted: 0, createdBy });
         const readsNums = await ReadModel.countDocuments({ is_deleted: 0, authorUid: createdBy });
         const favoriteNums = await favoriteModel.countDocuments({ is_deleted: 0, authorUid: createdBy });
         return { articleNums, readsNums, favoriteNums };
+    }
+
+    public async getHotAuthors() {
+        const InAMonth = moment().subtract(1, 'M').unix();
+        const result = await Promise.all([
+            favoriteModel.aggregate([
+                { $match: { is_deleted: 0, createdAt: { $gte: InAMonth } } },
+                { $group: { _id: '$authorUid', total: { $sum: 2 } } }
+            ]),
+            ReadModel.aggregate([
+                { $match: { is_deleted: 0, createdAt: { $gte: InAMonth }}}, 
+                { $group: { _id: '$authorUid', total: { $sum: 1}}},
+                { $lookup: {
+                    from: 'users',
+                    localField: '_id',
+                    foreignField: 'uid',
+                    as: 'userInfo'
+                }},
+                {
+                    $project: {
+                        total: 1,
+                        'userInfo.realName': 1,
+                        'userInfo.username': 1,
+                        'userInfo.nilName': 1,
+                        'userInfo.avatar': 1
+                    }
+                }
+            ])
+        ])
     }
 }
 

@@ -23,6 +23,7 @@ export default (router: Router) => {
     router.get('/articles/:type/articles/list', controller.getListByPage.bind(controller));
     router.get('/articles/list/hot', controller.getHotArticles.bind(controller));
     router.get('/articles/list/new', controller.getNewArticles.bind(controller));
+    router.get('/articles/list/authors/hot', controller.getHotAuthors.bind(controller));
 
     router.get('/articles/types/list', typeController.getListByPage.bind(typeController));
     router.get('/articles/types/all', typeController.cascaderForTypes.bind(typeController));

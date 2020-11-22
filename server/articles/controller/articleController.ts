@@ -14,6 +14,7 @@ import { Logger } from '../../../logger/config';
 import { populateInterface } from '../../base/baseInterface';
 import { FilterQuery } from 'mongoose';
 import { ArticleInterface } from '../interface';
+import { createTextSpanFromBounds } from 'typescript';
 export default class ArticleController extends BaseController<ArticleService> {
     populater: populateInterface[]
     constructor() {
@@ -121,7 +122,17 @@ export default class ArticleController extends BaseController<ArticleService> {
             return ctx.body = { code: '000', result };
         } catch (err) {
             Logger.error('获取最新文章失败', err.message);
-            return ctx.body = { code: '000', message: err.message }
+            return ctx.body = { code: '000', message: err.message };
+        }
+    }
+
+    public async getHotAuthors(ctx: ParameterizedContext) {
+        try {
+            const result = await this.service.getHotAuthors();
+            return ctx.body = { code: '000', result };
+        } catch (err) {
+            Logger.error('获取热门作者失败', err.message);
+            return ctx.body = { code: '000', message: err.message };
         }
     }
 }
