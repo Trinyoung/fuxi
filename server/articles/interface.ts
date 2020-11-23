@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-20 17:01:53
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-23 13:35:27
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\interface.ts
@@ -37,7 +37,7 @@ export interface ArticleInterface extends BaseInterface, Document {
     createdBy?: string,
     publised?: yesorno
     hasReads?: number,
-    favorites?: number
+    favoriteNums?: number
 }
 
 export interface FavoriteInterface extends ArticleBaseInterface {

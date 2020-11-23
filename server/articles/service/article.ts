@@ -229,32 +229,39 @@ export class ArticleService extends BaseService<ArticleInterface> {
     }
 
     public async getHotAuthors() {
-        const InAMonth = moment().subtract(1, 'M').unix();
-        const result = await Promise.all([
-            favoriteModel.aggregate([
-                { $match: { is_deleted: 0, createdAt: { $gte: InAMonth } } },
-                { $group: { _id: '$authorUid', total: { $sum: 2 } } }
-            ]),
-            ReadModel.aggregate([
-                { $match: { is_deleted: 0, createdAt: { $gte: InAMonth }}}, 
-                { $group: { _id: '$authorUid', total: { $sum: 1}}},
-                { $lookup: {
+        const result = await this.model.aggregate([
+            { $match: { is_deleted: 0 } },
+            { $group: { _id: '$createdBy', favoriteNums: { $sum: '$favoriteNums' }, readNums: { $sum: '$hasReads' }, articleNums: {$sum: 1} } },
+            {
+                $lookup: {
                     from: 'users',
                     localField: '_id',
                     foreignField: 'uid',
                     as: 'userInfo'
-                }},
-                {
-                    $project: {
-                        total: 1,
-                        'userInfo.realName': 1,
-                        'userInfo.username': 1,
-                        'userInfo.nilName': 1,
-                        'userInfo.avatar': 1
-                    }
                 }
-            ])
-        ])
+            },
+            {
+              $unwind: '$userInfo'  
+            },
+            {
+                $project: {
+                    'userInfo.username': 1,
+                    'favoriteNums': 1,
+                    'readNums': 1,
+                    'articleNums': 1
+                }
+            },
+            
+            {
+                $sort: {
+                    favoriteNums: -1
+                }
+            },
+            {
+                $limit: 5
+            }
+        ]);
+        return result;
     }
 }
 
