@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-23 13:47:58
+ * @LastEditTime: 2020-11-25 11:06:02
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\router.ts
@@ -34,7 +34,7 @@ export default (router: Router) => {
     router.get('/articles/types/parent', typeController.getParentTypes.bind(typeController));
 
     router.post('/articles/favorites',  articleMiddleWare.setFavoriteMiddleware, favoriteController.create.bind(favoriteController));
-    router.get('/articles/favorites/:articleteId', favoriteController.getOne.bind(favoriteController));
+    router.get('/articles/favorites/:articleId', favoriteController.getOne.bind(favoriteController));
     router.get('/aritcles/favorites/nums', favoriteController.getNums.bind(favoriteController));
     router.delete('/articles/favorites/:favoriteId', favoriteController.delete.bind(favoriteController));
 }

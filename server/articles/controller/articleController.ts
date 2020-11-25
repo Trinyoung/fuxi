@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-23 13:19:49
+ * @LastEditTime: 2020-11-25 15:53:21
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\articleController.ts
@@ -14,7 +14,6 @@ import { Logger } from '../../../logger/config';
 import { populateInterface } from '../../base/baseInterface';
 import { FilterQuery } from 'mongoose';
 import { ArticleInterface } from '../interface';
-import { createTextSpanFromBounds } from 'typescript';
 export default class ArticleController extends BaseController<ArticleService> {
     populater: populateInterface[]
     constructor() {
@@ -67,13 +66,16 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getListByPageForAriticle(ctx: ParameterizedContext) {
         try {
-            const { page, limit, type, category, keyword } = ctx.query;
-            let query: FilterQuery<ArticleInterface>;
+            const { page, limit, type, category, keyword, createdBy } = ctx.query;
+            let query: FilterQuery<ArticleInterface> = {};
             if (type) {
                 query.type = type;
             }
             if (category) {
                 query.category = category;
+            }
+            if (createdBy) {
+                query.createdBy = createdBy;
             }
             const projection = '';
             let populater: populateInterface[] = [

@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-12 20:53:18
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 19:24:39
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-25 11:04:44
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\base\baseController.ts
@@ -44,6 +44,7 @@ export class BaseController<T extends BaseService<BaseInterface>>{
     public async getOne(ctx: ParameterizedContext) {
         try {
             const query = Object.assign({}, ctx.query, ctx.params, ctx.request.body);
+            console.log(query, '------------------------->')
             const result = await this.service.getItem(query);
             return ctx.body = { code: '000', result };
         } catch (err) {
