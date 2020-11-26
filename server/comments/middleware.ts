@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-11-11 08:49:45
- * @LastEditTime: 2020-11-25 14:33:08
+ * @LastEditTime: 2020-11-26 17:33:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edito
  * @FilePath: \fuxi\server\comments\middleware.ts
@@ -18,7 +18,6 @@ export default class CommentMiddleware {
         if (email) {
             const expireTime = new Date().getTime() + 60 * 60 * 2 * 1000;
             // 游客评论信息保存！
-            console.log(nilName, email, '---------------------->')
             ctx.cookies.set('visitInfo', JSON.stringify({ nilName, email }), { expires: new Date(expireTime), httpOnly: false });
         }
     }
