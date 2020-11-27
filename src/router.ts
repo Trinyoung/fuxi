@@ -7,7 +7,7 @@
  * @Description: XXX
  * @FilePath: \fuxi\router.ts
  */
-import * as Router from 'koa-router';
+import * as Router from 'src/server/user/node_modules/koa-router';
 // import * as Koa from 'koa';
 import userRouter from './server/user/router'
 import articleRouter from './server/articles/router'
