@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-10-19 15:57:57
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-19 16:14:46
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-11-27 19:38:05
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\tags\middleware.ts
@@ -21,7 +21,7 @@ export async function getTagsFromCache(ctx: ParameterizedContext, next: Next) {
                     return;
                 }
                 if (!result) {
-                    return resolve()
+                    return resolve(null)
                 }
                 // Logger.info('获取用户信息成功', result);
                 return resolve(JSON.parse(decodeURIComponent(result)))

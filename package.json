@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -e ts,tsx --exec ts-node ./app.ts"
+    "dev": "nodemon -e ts,tsx --exec ts-node ./src/app.ts",
+    "start": "tsc & node ./dist/app.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
