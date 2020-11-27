@@ -19,6 +19,7 @@ const router =  new Router(
 		prefix: '/api'
 	}
 );
+console.log(process.env.NODE_ENV, process.argv, '环境和端口');
 route(router);
 app
 	.use(bodyParser())
