@@ -18,6 +18,5 @@ export default (router: Router) => {
   userRouter(router);
   articleRouter(router);
   tagRouter(router);
-  // testRouter(router);
   commentRouter(router);
 }
