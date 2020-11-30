@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-23 15:22:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-24 14:42:35
+ * @LastEditTime: 2020-11-30 09:14:01
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\app.ts
@@ -19,7 +19,7 @@ const router =  new Router(
 		prefix: '/api'
 	}
 );
-console.log(process.env.NODE_ENV, process.argv, '环境和端口');
+
 route(router);
 app
 	.use(bodyParser())
