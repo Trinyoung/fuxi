@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-21 14:27:01
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-12-04 19:56:27
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
@@ -29,7 +29,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
             if (!parent && !type.parent || parent && JSON.stringify(type.parent) == JSON.stringify(parent.value.split('_')[1])) {
                 let item: CascaderTypeInterface = {
                     label: type.title,
-                    value: type.typeCode+'_'+type._id,
+                    value: type.typeCode + '_' + type._id,
                 };
                 if (parent) {
                     if (!parent.children) {
@@ -48,7 +48,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
 
     async getParentTypes(typeCode: string, id?: string, withTitle?: number) {
         if (id) {
-            const type = await this.getItem({_id: id}, 'typeCode');
+            const type = await this.getItem({ _id: id }, 'typeCode');
             typeCode = type.typeCode;
         }
         const length = typeCode.length;
@@ -68,6 +68,23 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
             }
         })
         return result;
+    }
+
+    async getTypesTree(query: FilterQuery<ArticleTypeInterface>) {
+        // const types = await this.getList(query, true);
+        // const types = await ArticleTypeModel.aggregate([
+        //     { $match: query },
+        //     {
+        //         $lookUp: {
+        //             from: 'articles',
+        //             localField: '_id',
+        //             foreignFiels: 'type',
+        //             as: 'articles'
+        //         }
+        //     },
+        // ])
+        // const 
+        const types = await this.getList({})
     }
 }
 
