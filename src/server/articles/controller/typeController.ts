@@ -54,4 +54,15 @@ export default class TypeController extends BaseController<TypeService> {
             return ctx.body = { code: '999', err:err.message};
         }
     }
+
+    async getTypesTree (ctx: ParameterizedContext) {
+        try {
+            const query = Object.assign(ctx.query, ctx.params, ctx.request.body);
+            const result = await this.service.getTypesTree(query);
+            return ctx.body = { code: '000', result};
+        } catch (err) {
+            Logger.error('getTypesTree error:', err.message);
+            return ctx.body = {code: '999', err:err.message};
+        }
+    }
 }

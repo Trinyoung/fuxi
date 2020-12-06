@@ -24,11 +24,16 @@ const ArticleTypeSchema = new Schema({
     tags: [{ type: Schema.Types.ObjectId, ref:'tag' }],
     createdAt: { type: Number, default: moment().unix() },
     updatedAt: { type: Number, default: moment().unix() },
-    createdBy: { type: String, refs: 'user' },
+    createdBy: { type: String, ref: 'user' },
     updatedBy: { type: String, ref: 'user' },
     is_deleted: { type: Number, default: 0 }
 });
-
+ArticleTypeSchema.virtual('author', {
+    ref: 'user',
+    localField: 'createdBy',
+    foreignField: 'uid',
+    justOne: true
+});
 ArticleTypeSchema.plugin(mongoosePaginate);
 ArticleTypeSchema.plugin(uniqueValidator);
 export const ArticleTypeModel: PaginateModel<ArticleTypeInterface> = db('articleType', ArticleTypeSchema);

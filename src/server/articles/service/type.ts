@@ -9,8 +9,9 @@
  */
 import { BaseService } from "../../base/baseService"
 import { ArticleTypeModel } from '../models/article_types';
-import { ArticleTypeInterface, CascaderTypeInterface } from '../interface';
+import { ArticleInterface, ArticleTypeInterface, CascaderTypeInterface } from '../interface';
 import { FilterQuery } from "mongoose";
+import { populateInterface } from '../../base/baseInterface';
 export class TypeService extends BaseService<ArticleTypeInterface> {
     constructor() {
         super(ArticleTypeModel);
@@ -33,11 +34,11 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                 };
                 if (parent) {
                     if (!parent.children) {
-                        parent.children = []
+                        parent.children = [];
                     }
                     parent.children.push(item);
                 } else {
-                    result.push(item)
+                    result.push(item);
                 }
                 types.splice(i, 1);
                 i--;
@@ -71,20 +72,69 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
     }
 
     async getTypesTree(query: FilterQuery<ArticleTypeInterface>) {
-        // const types = await this.getList(query, true);
-        // const types = await ArticleTypeModel.aggregate([
-        //     { $match: query },
-        //     {
-        //         $lookUp: {
-        //             from: 'articles',
-        //             localField: '_id',
-        //             foreignFiels: 'type',
-        //             as: 'articles'
-        //         }
-        //     },
-        // ])
-        // const 
-        const types = await this.getList({})
+        const types = await ArticleTypeModel.aggregate([
+            { $match: Object.assign(query, { is_deleted: 0 }) },
+            {
+                $lookup: {
+                    from: 'articles',
+                    localField: '_id',
+                    foreignField: 'type',
+                    as: 'articles'
+                }
+            },
+            {
+                $project: {
+                    title: 1,
+                    typeCode: 1,
+                    parent: 1,
+                    isTop: 1,
+                    'articles.title': 1,
+                    'articles.type': 1,
+                    'articles.createdAt': 1,
+                    'articles._id': 1,
+                    createdBy: 1,
+                    createdAt: 1,
+                    description: 1
+                }
+            },
+            {
+                $sort: { createdAt: -1 }
+            }
+        ]);
+        const result: CascaderTypeInterface[] = [];
+        TypeService.typesTree(types as ArticleTypeInterface[], null, result);
+        return result;
+    }
+
+    static typesTree(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result?: CascaderTypeInterface[]) {
+        for (let i = 0; i < types.length; i++) {
+            const type = types[i];
+            if (!parent && !type.parent || parent && JSON.stringify(type.parent) == JSON.stringify(parent.value)) {
+                let item: CascaderTypeInterface = {
+                    label: type.title,
+                    value: type._id,
+                    type: 1
+                }; 
+                if (type.articles && type.articles.length > 0) {
+                    item.children = type.articles.map(item => ({
+                        label: item.title,
+                        value: item._id,
+                        type: 2
+                    }));
+                }
+                if (parent) {
+                    if (!parent.children) {
+                        parent.children = [];
+                    }
+                    parent.children.unshift(item);
+                } else {
+                    result.push(item);
+                }
+                types.splice(i, 1);
+                i--;
+                TypeService.typesTree(types, item);
+            }
+        }
     }
 }
 

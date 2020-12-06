@@ -32,6 +32,7 @@ export default (router: Router) => {
     router.get('/articles/types/all', typeController.cascaderForTypes.bind(typeController));
     router.post('/articles/reads', articleMiddleWare.setReadMiddleware, readController.create.bind(readController));
     router.get('/articles/types/parent', typeController.getParentTypes.bind(typeController));
+    router.get('/articles/types/tree', typeController.getTypesTree.bind(typeController));
 
     router.post('/articles/favorites',  articleMiddleWare.setFavoriteMiddleware, favoriteController.create.bind(favoriteController));
     router.get('/articles/favorites/:articleId', favoriteController.getOne.bind(favoriteController));

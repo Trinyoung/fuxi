@@ -49,7 +49,8 @@ export interface ArticleTypeInterface extends BaseInterface, Document {
     title: string,
     parent: Schema.Types.ObjectId,
     typeCode: string,
-    isTop: number
+    isTop: number,
+    articles?: ArticleInterface []
 }
 
 export interface TagInterface extends BaseInterface, Document {
@@ -65,9 +66,7 @@ export interface ArticleBaseInterface extends BaseInterface, Document {
 }
 export interface CascaderTypeInterface {
     label: string,
-    // value: Schema.Types.ObjectId,
-    // typeCode: string,
     value: string,
-    // typeCode: string,
+    type?: number,
     children?: CascaderTypeInterface[]
 }
