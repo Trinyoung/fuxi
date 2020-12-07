@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-04 19:56:27
+ * @LastEditTime: 2020-12-07 10:59:09
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
@@ -27,7 +27,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
     static cascaderForTypes(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result?: CascaderTypeInterface[]) {
         for (let i = 0; i < types.length; i++) {
             const type = types[i];
-            if (!parent && !type.parent || parent && JSON.stringify(type.parent) == JSON.stringify(parent.value.split('_')[1])) {
+            if (!type.parent || parent && JSON.stringify(type.parent) == JSON.stringify(parent.value.split('_')[1])) {
                 let item: CascaderTypeInterface = {
                     label: type.title,
                     value: type.typeCode + '_' + type._id,
@@ -42,7 +42,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                 }
                 types.splice(i, 1);
                 i--;
-                TypeService.cascaderForTypes(types, item);
+                TypeService.cascaderForTypes(types, item, result);
             }
         }
     }
@@ -98,7 +98,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                 }
             },
             {
-                $sort: { createdAt: -1 }
+                $sort: { _id: -1 }
             }
         ]);
         const result: CascaderTypeInterface[] = [];
@@ -109,12 +109,12 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
     static typesTree(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result?: CascaderTypeInterface[]) {
         for (let i = 0; i < types.length; i++) {
             const type = types[i];
-            if (!parent && !type.parent || parent && JSON.stringify(type.parent) == JSON.stringify(parent.value)) {
+            if (!type.parent || parent && JSON.stringify(type.parent) === JSON.stringify(parent.value)) {
                 let item: CascaderTypeInterface = {
                     label: type.title,
                     value: type._id,
                     type: 1
-                }; 
+                };
                 if (type.articles && type.articles.length > 0) {
                     item.children = type.articles.map(item => ({
                         label: item.title,
@@ -122,7 +122,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                         type: 2
                     }));
                 }
-                if (parent) {
+                if (type.parent) {
                     if (!parent.children) {
                         parent.children = [];
                     }
@@ -130,9 +130,10 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                 } else {
                     result.push(item);
                 }
+               
                 types.splice(i, 1);
                 i--;
-                TypeService.typesTree(types, item);
+                TypeService.typesTree(types, item, result)
             }
         }
     }
