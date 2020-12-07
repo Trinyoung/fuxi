@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-23 13:35:27
+ * @LastEditTime: 2020-12-07 17:14:37
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\interface.ts
@@ -68,5 +68,6 @@ export interface CascaderTypeInterface {
     label: string,
     value: string,
     type?: number,
+    createdAt?: number,
     children?: CascaderTypeInterface[]
 }

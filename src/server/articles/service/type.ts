@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-07 10:59:09
+ * @LastEditTime: 2020-12-07 17:14:08
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
@@ -113,13 +113,15 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                 let item: CascaderTypeInterface = {
                     label: type.title,
                     value: type._id,
-                    type: 1
+                    type: 1,
+                    createdAt: type.createdAt
                 };
                 if (type.articles && type.articles.length > 0) {
                     item.children = type.articles.map(item => ({
                         label: item.title,
                         value: item._id,
-                        type: 2
+                        type: 2,
+                        createdAt: item.createdAt
                     }));
                 }
                 if (type.parent) {
