@@ -32,7 +32,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                     label: type.title,
                     value: type.typeCode + '_' + type._id,
                 };
-                if (parent) {
+                if (type.parent) {
                     if (!parent.children) {
                         parent.children = [];
                     }
