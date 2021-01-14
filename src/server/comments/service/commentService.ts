@@ -2,14 +2,14 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-10-22 08:37:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-25 13:48:57
+ * @LastEditTime: 2021-01-14 08:44:40
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\comments\service\commentService.ts
  */
 import { BaseService } from '../../base/baseService';
 import { commentModel } from '../models/commentModel';
-import { CommentInterface } from '../interface';
+import { CommentInterface, CommentFavoriteInterface } from '../interface';
 import { FilterQuery } from 'mongoose';
 import { UserSchema } from '../../user/models/user';
 import { User } from '../../user/userInterface';
@@ -23,7 +23,7 @@ class CommentService extends BaseService<CommentInterface> {
         query = this._fullQuery(query);
         const model = this.model.find(query, projection);
         let result: CommentInterface[];
-        const favorites = await commentFavoriteModel.find({ createdBy: uid, articleId: query.articleId });
+        const favorites: CommentFavoriteInterface[] = await commentFavoriteModel.find({ createdBy: uid, articleId: query.articleId });
         const favoritesKeyByComment = favorites.reduce((x: any, y) => {
             x[JSON.stringify(y._id)] = y;
             return x;

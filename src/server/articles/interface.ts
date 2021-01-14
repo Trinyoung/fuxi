@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-07 17:14:37
+ * @LastEditTime: 2021-01-14 10:48:20
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\interface.ts
@@ -45,21 +45,21 @@ export interface FavoriteInterface extends ArticleBaseInterface {
     authorUid?: String
 }
 
-export interface ArticleTypeInterface extends BaseInterface, Document {
-    title: string,
-    parent: Schema.Types.ObjectId,
-    typeCode: string,
-    isTop: number,
+export interface ArticleTypeInterface extends BaseInterface {
+    title?: string,
+    parent?: Schema.Types.ObjectId,
+    typeCode?: string,
+    isTop?: number,
     articles?: ArticleInterface []
 }
 
-export interface TagInterface extends BaseInterface, Document {
+export interface TagInterface extends BaseInterface {
     name: string
 }
 
 export interface ReadInterface extends ArticleBaseInterface {
-    articleId: Schema.Types.ObjectId,
-    authorUid: string
+    articleId?: Schema.Types.ObjectId,
+    authorUid?: string
 }
 export interface ArticleBaseInterface extends BaseInterface, Document {
     articleId?: Schema.Types.ObjectId,

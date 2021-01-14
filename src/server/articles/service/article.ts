@@ -8,6 +8,8 @@ import { FilterQuery, Schema } from "mongoose";
 import { UserSchema } from "../../user/models/user";
 import { favoriteModel } from "../models/favorite";
 import { commentModel } from "../../comments/models/commentModel";
+import {CommentInterface} from "../../comments/interface";
+import {FavoriteInterface, ReadInterface} from "../interface"
 export class ArticleService extends BaseService<ArticleInterface> {
     constructor() {
         super(ArticleModel);
@@ -18,9 +20,9 @@ export class ArticleService extends BaseService<ArticleInterface> {
         const InAweek = moment().subtract(1, 'week').unix();
         const ids = result.docs.map(item => item._id);
         const [readsKeyByArticle, favoriteKeyByArticle, commentKeyByArticle] = await Promise.all([
-            ReadModel.find({ articleId: { $in: ids } }).then(res => { return Promise.resolve(this.objKeyByArticle(res)) }),
-            favoriteModel.find({ articleId: { $in: ids } }).then(res => { return Promise.resolve(this.objKeyByArticle(res)) }),
-            commentModel.find({ articleId: { $in: ids } }).then(res => { return Promise.resolve(this.objKeyByArticle(res)) })
+            ReadModel.find({ articleId: { $in: ids } }).then((res:any) => { return Promise.resolve(this.objKeyByArticle(res)) }),
+            favoriteModel.find({ articleId: { $in: ids } }).then((res:any) => { return Promise.resolve(this.objKeyByArticle(res)) }),
+            commentModel.find({ articleId: { $in: ids } }).then((res:any) => { return Promise.resolve(this.objKeyByArticle(res)) })
         ]);
         const resArr = result.docs.map(item => {
             const readsObj = Object.assign({ total: 0, weekNums: 0, monthNums: 0 }, readsKeyByArticle[JSON.stringify(item._id)]);

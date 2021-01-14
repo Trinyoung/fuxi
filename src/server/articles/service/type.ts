@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-12-07 17:14:08
+ * @LastEditTime: 2021-01-13 21:53:07
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
@@ -61,7 +61,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
         }
         const typeList = await this.getList({ typeCode: { $in: parents } }, true, 'typeCode title');
         const result: {}[] = [];
-        typeList.forEach(item => {
+        typeList.forEach((item) => {
             if (withTitle) {
                 result[(item.typeCode.length - 4) / 4] = item;
             } else {
