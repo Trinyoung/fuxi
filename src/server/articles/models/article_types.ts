@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:21
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-09-23 18:46:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-01-15 14:58:25
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\models\article_types.ts
@@ -19,7 +19,8 @@ const ArticleTypeSchema = new Schema({
     title: { type: String, unique: true },
     typeCode: { type: String, unique: true },
     description: String,
-    parent: { type: String },
+    isTop: { type: Number, enum: [0, 1]},
+    parent: { type: Schema.Types.ObjectId },
     cover_url: String,
     tags: [{ type: Schema.Types.ObjectId, ref:'tag' }],
     createdAt: { type: Number, default: moment().unix() },
