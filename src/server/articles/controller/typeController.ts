@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-10-20 08:34:43
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-20 10:49:43
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-01-18 15:24:45
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\typeController.ts
@@ -21,7 +21,7 @@ export default class TypeController extends BaseController<TypeService> {
     async getListByPage(ctx: ParameterizedContext) {
         try {
             const params = Object.assign({ page: 1, limit: 10 }, ctx.query, ctx.params, ctx.request.body);
-            const query = _.omit(params, ['limit', 'page'])
+            const query = _.omit(params, ['limit', 'page']);
             const populater = {
                 path: 'tags',
                 select: 'name'

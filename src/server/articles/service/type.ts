@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-13 21:53:07
+ * @LastEditTime: 2021-01-18 16:21:45
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
@@ -135,7 +135,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                
                 types.splice(i, 1);
                 i--;
-                TypeService.typesTree(types, item, result)
+                TypeService.typesTree(types, item, result);
             }
         }
     }

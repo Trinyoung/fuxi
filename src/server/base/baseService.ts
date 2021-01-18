@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-12 20:53:18
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-13 21:52:47
+ * @LastEditTime: 2021-01-18 17:02:05
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\base\baseService.ts
@@ -24,7 +24,7 @@ export class BaseService<T extends BaseInterface> {
     public async updateItem(condition: UpdateQuery<T>, query: FilterQuery<T>, options?: ModelUpdateOptions) {
         condition = this._fullItem(condition);
         query = this._fullQuery(query);
-        await this.model.update(query, condition, options);
+        await this.model.updateOne(query, condition, options);
         return;
     };
 
