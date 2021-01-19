@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2020-09-23 16:03:09
- * @LastEditTime: 2020-11-27 19:07:45
- * @LastEditors: your name
+ * @LastEditTime: 2021-01-19 21:58:06
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \fuxi\src\db\mongo\mongo.ts
  */
 import * as mongoose from 'mongoose';
-const DB_URL = "mongodb://127.0.0.1/process";
+const DB_URL = "mongodb://trinyoung:987654321q@127.0.0.1/process";
 let connectTimes = 0;
 const connect = function () {
 	connectTimes++;
