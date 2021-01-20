@@ -2,35 +2,34 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-20 14:18:00
+ * @LastEditTime: 2021-01-20 16:12:46
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
  */
-import { BaseService } from "../../base/baseService"
+import { BaseService } from '../../base/baseService';
 import { ArticleTypeModel } from '../models/article_types';
-import { ArticleInterface, ArticleTypeInterface, CascaderTypeInterface } from '../interface';
-import { FilterQuery } from "mongoose";
-import { populateInterface } from '../../base/baseInterface';
+import { ArticleTypeInterface, CascaderTypeInterface } from '../interface';
+import { FilterQuery } from 'mongoose';
 export class TypeService extends BaseService<ArticleTypeInterface> {
-    constructor() {
+    constructor () {
         super(ArticleTypeModel);
     }
 
-    async getListForTypes(query: FilterQuery<ArticleTypeInterface>) {
+    async getListForTypes (query: FilterQuery<ArticleTypeInterface>) {
         const types = await this.getList(query, false);
         const result: CascaderTypeInterface[] = [];
         TypeService.cascaderForTypes(types as ArticleTypeInterface[], null, result);
         return result;
     }
 
-    static cascaderForTypes(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result?: CascaderTypeInterface[]) {
+    static cascaderForTypes (types: ArticleTypeInterface[], parent: CascaderTypeInterface, result?: CascaderTypeInterface[]) {
         for (let i = 0; i < types.length; i++) {
             const type = types[i];
-            if (!type.parent || parent && JSON.stringify(type.parent) == JSON.stringify(parent.value.split('_')[1])) {
-                let item: CascaderTypeInterface = {
+            if (!type.parent || parent && JSON.stringify(type.parent) === JSON.stringify(parent.value.split('_')[1])) {
+                const item: CascaderTypeInterface = {
                     label: type.title,
-                    value: type.typeCode + '_' + type._id,
+                    value: type.typeCode + '_' + type._id
                 };
                 if (type.parent) {
                     if (!parent.children) {
@@ -47,7 +46,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
         }
     }
 
-    async getParentTypes(typeCode: string, id?: string, withTitle?: number) {
+    async getParentTypes (typeCode: string, id?: string, withTitle?: number) {
         if (id) {
             const type = await this.getItem({ _id: id }, 'typeCode');
             typeCode = type.typeCode;
@@ -57,7 +56,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
         let i = 4;
         while (i < length - 2) {
             parents.push(typeCode.substr(0, i));
-            i += 2
+            i += 2;
         }
         const typeList = await this.getList({ typeCode: { $in: parents } }, true, 'typeCode title');
         const result: {}[] = [];
@@ -67,11 +66,11 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
             } else {
                 result[(item.typeCode.length - 4) / 4] = item.typeCode + '_' + item._id;
             }
-        })
+        });
         return result;
     }
 
-    async getTypesTree(query: FilterQuery<ArticleTypeInterface>) {
+    async getTypesTree (query: FilterQuery<ArticleTypeInterface>) {
         const types = await ArticleTypeModel.aggregate([
             { $match: Object.assign(query, { is_deleted: 0 }) },
             {
@@ -106,7 +105,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
         return result;
     }
 
-    static typesTree(types: ArticleTypeInterface[], parent: CascaderTypeInterface, result?: CascaderTypeInterface[]) {
+    static typesTree (types: ArticleTypeInterface[], parent: CascaderTypeInterface, result?: CascaderTypeInterface[]) {
         for (let i = 0; i < types.length; i++) {
             const type = types[i];
             if ((!type.parent || parent) && JSON.stringify(type.parent) === JSON.stringify(parent.value)) {
@@ -140,4 +139,4 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
     }
 }
 
-export const typeService = new TypeService(); 
+export const typeService = new TypeService();

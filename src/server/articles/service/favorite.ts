@@ -7,19 +7,19 @@
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\favorite.ts
  */
-import { BaseService } from "../../base/baseService"
+import { BaseService } from '../../base/baseService';
 import { favoriteModel } from '../models/favorite';
 import { FavoriteInterface } from '../interface';
-import { FilterQuery } from "mongoose";
+import { FilterQuery } from 'mongoose';
 
 export class FavoriteService extends BaseService<FavoriteInterface> {
-    constructor() {
+    constructor () {
         super(favoriteModel);
     }
-    
+
     public async getNums (query: FilterQuery<FavoriteInterface>) {
         return await this.model.countDocuments(query);
     }
 }
 
-export const favoriteService = new FavoriteService(); 
+export const favoriteService = new FavoriteService();

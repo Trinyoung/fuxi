@@ -15,18 +15,18 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "semi":["error", "always"],
+        "semi": ["error", "always"],
         "no-var": "warn",
         "no-dupe-args":"error",
         "no-dupe-keys":"error",
-        "no-invalid-this":["error", "never"],
+        "no-invalid-this":"off",
         "no-extra-bind":"error",
         "no-const-assign":"error",
         "no-case-declarations":"off",
         "require-atomic-updates": "off",
         "quotes":[2, "single"],
         "indent":["error", 4],
+        "camelcase":"off",
         "no-mixed-operators":"off"
     }
 }
-

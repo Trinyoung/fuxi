@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-23 15:36:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-20 14:03:34
+ * @LastEditTime: 2021-01-20 16:08:18
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\router.ts

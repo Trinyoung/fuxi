@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-20 14:10:12
+ * @LastEditTime: 2021-01-20 16:20:59
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\articleController.ts
@@ -47,7 +47,7 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getListByPage (ctx: ParameterizedContext) {
         try {
-            const { page, limit, type, category, keyword } = ctx.query;
+            const { page, limit, type, category } = ctx.query;
             let query: FilterQuery<ArticleInterface>;
             if (type) {
                 query.type = type;
@@ -66,7 +66,7 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getListByPageForAriticle (ctx: ParameterizedContext) {
         try {
-            const { page, limit, type, category, keyword, createdBy } = ctx.query;
+            const { page, limit, type, category, createdBy } = ctx.query;
             const query: FilterQuery<ArticleInterface> = {};
             if (type) {
                 query.type = type;

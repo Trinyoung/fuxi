@@ -1,50 +1,37 @@
+/* eslint-disable no-unused-vars */
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-20 14:12:29
+ * @LastEditTime: 2021-01-20 16:36:06
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\interface.ts
  */
-import { BaseInterface } from '../base/baseInterface';
+import { BaseInterface, YesOrNo } from '../base/baseInterface';
 import { Schema, Document } from 'mongoose';
 
-enum category {
+export enum category {
     single = 1,
     series = 2
-}
-enum yesorno {
-    no = 0,
-    yes = 1
-}
-interface baseCreated {
-    createdAt: number,
-    createdBy: string
 }
 export interface ArticleInterface extends BaseInterface, Document {
     title?: string,
     type?: string,
     category?: category, // 1 代表单篇幅文章， 2 代表系列文章
-    public?: yesorno,
+    public?: YesOrNo,
     subtitle?: string,
     content?: string,
     sourceUrl?: string,
     content_html?: string,
-    is_deleted?:yesorno,
+    is_deleted?: YesOrNo,
     refers?: [string],
     createdAt?: number,
     createdBy?: string,
-    publised?: yesorno
+    publised?: YesOrNo
     hasReads?: number,
     favoriteNums?: number
 }
-
-export interface FavoriteInterface extends ArticleBaseInterface {
-    // articleId: Schema.Types.ObjectId,
-    authorUid?: String
-}
-
 export interface ArticleTypeInterface extends BaseInterface {
     title?: string,
     parent?: Schema.Types.ObjectId,
@@ -52,13 +39,18 @@ export interface ArticleTypeInterface extends BaseInterface {
     isTop?: number,
     articles?: ArticleInterface []
 }
+export interface ArticleBaseInterface extends BaseInterface, Document {
+    articleId?: Schema.Types.ObjectId,
+}
+export interface FavoriteInterface extends ArticleBaseInterface {
+    // articleId: Schema.Types.ObjectId,
+    authorUid?: String
+}
 
 export interface TagInterface extends BaseInterface {
     name: string
 }
-export interface ArticleBaseInterface extends BaseInterface, Document {
-    articleId?: Schema.Types.ObjectId,
-}
+
 export interface ReadInterface extends ArticleBaseInterface {
     articleId?: Schema.Types.ObjectId,
     authorUid?: string

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-01-13 15:21:58
- * @LastEditTime: 2021-01-20 14:17:12
- * @LastEditors: your name
+ * @LastEditTime: 2021-01-20 16:18:31
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \fuxi\src\server\user\models\confirmCode.ts
  */

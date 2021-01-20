@@ -14,15 +14,14 @@ import * as uniqueValidator from 'mongoose-unique-validator';
 import { ArticleTypeInterface } from '../interface';
 import * as moment from 'moment';
 
-
 const ArticleTypeSchema = new Schema({
     title: { type: String, unique: true },
     typeCode: { type: String, unique: true },
     description: String,
-    isTop: { type: Number, enum: [0, 1]},
+    isTop: { type: Number, enum: [0, 1] },
     parent: { type: Schema.Types.ObjectId },
     cover_url: String,
-    tags: [{ type: Schema.Types.ObjectId, ref:'tag' }],
+    tags: [{ type: Schema.Types.ObjectId, ref: 'tag' }],
     createdAt: { type: Number, default: moment().unix() },
     updatedAt: { type: Number, default: moment().unix() },
     createdBy: { type: String, ref: 'user' },

@@ -1,4 +1,13 @@
-import { Document } from "mongoose";
+/*
+ * @Author: your name
+ * @Date: 2021-01-13 21:24:29
+ * @LastEditTime: 2021-01-20 16:36:27
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \fuxi\src\server\base\baseInterface.ts
+ */
+/* eslint-disable no-unused-vars */
+import { Document } from 'mongoose';
 
 export interface BaseInterface extends Document {
   updatedAt?: number,
@@ -25,5 +34,5 @@ export enum YesOrNo {
 }
 
 // export interface keyOf {
-//   [string]: 
+//   [string]:
 // }

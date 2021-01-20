@@ -19,8 +19,8 @@ const UserModel = new Schema({
     password: { type: String, required: true },
     birthday: { type: Number },
     gender: { type: String, enum: [0, 1, 2], default: 0 }, // 0 未知， 1-男， 2：
-    createdAt: { type: Number, default: moment().unix()},
-    updatedAt: { type: Number, default: moment().unix()},
+    createdAt: { type: Number, default: moment().unix() },
+    updatedAt: { type: Number, default: moment().unix() },
     uid: { type: String, required: true, unique: true },
     mobile: { type: String, required: true, unique: true },
     email: { type: String, requried: true, unique: true },

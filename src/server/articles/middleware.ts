@@ -6,14 +6,14 @@
  * @Description: In User Settings Edit
  * @FilePath: \fuxi\server\articles\middleware.ts
  */
-import { Next, ParameterizedContext } from "koa";
+import { Next, ParameterizedContext } from 'koa';
 // import { ReadModel } from './models/reader';
 // import { favoriteModel } from './models/favorite';
 import { ArticleModel } from './models/article_model';
 import { Logger } from '../../logger/config';
 
 export default class ArticleMiddleware {
-    async setFavoriteMiddleware(ctx: ParameterizedContext, next: Next) {
+    async setFavoriteMiddleware (ctx: ParameterizedContext, next: Next) {
         await next();
         try {
             const { articleId } = ctx.request.body;
@@ -21,11 +21,11 @@ export default class ArticleMiddleware {
             ctx.body = { code: '000', result: result.favoriteNums };
         } catch (err) {
             Logger.error(err);
-            ctx.body = { code: '999', err }
+            ctx.body = { code: '999', err };
         }
     }
 
-    async setReadMiddleware(ctx: ParameterizedContext, next: Next) {
+    async setReadMiddleware (ctx: ParameterizedContext, next: Next) {
         await next();
         try {
             const { articleId } = ctx.request.body;
@@ -33,7 +33,7 @@ export default class ArticleMiddleware {
             ctx.body = { code: '000', result: result.hasReads };
         } catch (err) {
             Logger.error(err);
-            ctx.body = { code: '999', err }
+            ctx.body = { code: '999', err };
         }
     }
 }

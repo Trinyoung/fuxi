@@ -34,8 +34,8 @@ export default (router: Router) => {
     router.get('/articles/types/parent', typeController.getParentTypes.bind(typeController));
     router.get('/articles/types/tree', typeController.getTypesTree.bind(typeController));
 
-    router.post('/articles/favorites',  articleMiddleWare.setFavoriteMiddleware, favoriteController.create.bind(favoriteController));
+    router.post('/articles/favorites', articleMiddleWare.setFavoriteMiddleware, favoriteController.create.bind(favoriteController));
     router.get('/articles/favorites/:articleId', favoriteController.getOne.bind(favoriteController));
     router.get('/aritcles/favorites/nums', favoriteController.getNums.bind(favoriteController));
     router.delete('/articles/favorites/:favoriteId', favoriteController.delete.bind(favoriteController));
-}
+};
