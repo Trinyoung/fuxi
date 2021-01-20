@@ -1,16 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2020-09-23 16:03:09
- * @LastEditTime: 2021-01-20 15:02:01
+ * @LastEditTime: 2021-01-20 16:54:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \fuxi\src\db\mongo\mongo.ts
  */
 import * as mongoose from 'mongoose';
-// const config = require('config');
 import * as config from 'config';
 const DB_URL:string = config.get('database.mongodb.url');
-console.log(DB_URL, '-------------------->')
+console.log(DB_URL, '-------------------->');
 let connectTimes = 0;
 const connect = function () {
     connectTimes++;

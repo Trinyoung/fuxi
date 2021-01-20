@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-23 15:22:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-20 15:07:41
+ * @LastEditTime: 2021-01-20 16:58:31
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\app.ts
@@ -14,7 +14,7 @@ import route from './router';
 import { Logger } from './logger/config';
 import * as config from 'config';
 const port = config.get('port');
-// const port = require('config')
+
 const app = new Koa();
 const router = new Router(
     {
@@ -33,5 +33,5 @@ app.on('err', function (err) {
 });
 
 app.listen(port, () => {
-    Logger.info('server is on port: 9221');
+    Logger.info(`server is on port: ${port}`);
 });
