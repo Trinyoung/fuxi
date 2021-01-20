@@ -253,7 +253,6 @@ export class ArticleService extends BaseService<ArticleInterface> {
                     'articleNums': 1
                 }
             },
-            
             {
                 $sort: {
                     favoriteNums: -1

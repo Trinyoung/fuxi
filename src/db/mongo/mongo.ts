@@ -1,37 +1,36 @@
 /*
  * @Author: your name
  * @Date: 2020-09-23 16:03:09
- * @LastEditTime: 2021-01-19 21:58:06
+ * @LastEditTime: 2021-01-20 14:02:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \fuxi\src\db\mongo\mongo.ts
  */
 import * as mongoose from 'mongoose';
-const DB_URL = "mongodb://trinyoung:987654321q@127.0.0.1/process";
+const DB_URL = 'mongodb://trinyoung:987654321q@127.0.0.1/process';
 let connectTimes = 0;
 const connect = function () {
-	connectTimes++;
-	if (connectTimes > 5) {
-		console.error(`connect mongodb connectTimes > 5`);
-		setTimeout(() => {
-			process.exit(1);
-		}, 2000);
-		return;
-	}
-	mongoose.set('useCreateIndex', true)
-	mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify:false });
-	mongoose.connection.on("connected", () => {
-		console.info('connect mongodb successfully');
-	});
-	mongoose.connection.on("error", (error) => {
-		console.error("connect mongodb failed", error);
-	});
+    connectTimes++;
+    if (connectTimes > 5) {
+        console.error('connect mongodb connectTimes > 5');
+        setTimeout(() => {
+            process.exit(1);
+        }, 2000);
+        return;
+    }
+    mongoose.set('useCreateIndex', true);
+    mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+    mongoose.connection.on('connected', () => {
+        console.info('connect mongodb successfully');
+    });
+    mongoose.connection.on('error', (error) => {
+        console.error('connect mongodb failed', error);
+    });
 };
- //加上这个
+// 加上这个
 // mongoose.connect(db, { useNewUrlParser: true })
 connect();
 mongoose.connection.on('disconnected', function () {
-	connect();
+    connect();
 });
-
 export default mongoose.model;

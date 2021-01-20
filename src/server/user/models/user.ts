@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-01-13 21:24:29
+ * @LastEditTime: 2021-01-20 14:13:36
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \fuxi\src\server\user\models\user.ts
+ */
 import db from '../../../db/mongo/mongo';
 import { Schema, PaginateModel } from 'mongoose';
 import * as mongoosePaginate from 'mongoose-paginate';
@@ -20,8 +28,8 @@ const UserModel = new Schema({
 });
 
 UserModel.pre<User>('save', function (next) {
-    const user = this;
-    user.uid = user.uid.replace(/-/g, '');
+    // const user = this;
+    this.uid = this.uid.replace(/-/g, '');
     next();
 });
 UserModel.plugin(mongoosePaginate);

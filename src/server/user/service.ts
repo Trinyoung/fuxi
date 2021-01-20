@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-23 15:45:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-23 10:54:40
+ * @LastEditTime: 2021-01-20 13:54:16
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\user\service.ts
@@ -12,11 +12,11 @@ import { BaseService } from '../base/baseService';
 import { UserSchema } from './models/user';
 import { User } from './userInterface';
 class UserService extends BaseService<User> {
-    constructor() {
+    constructor () {
         super(UserSchema);
     }
 
-    async getHotAuthors() {
+    async getHotAuthors () {
         const users = await this.model.aggregate([
             { $match: { is_deleted: 0 } },
             {
@@ -25,7 +25,7 @@ class UserService extends BaseService<User> {
                     localField: 'uid',
                     foreignField: 'createdBy',
                     as: 'articles'
-                },
+                }
             },
             {
                 $lookUp: {
@@ -52,9 +52,10 @@ class UserService extends BaseService<User> {
                 }
             },
             {
-                $group: {_id: '$uid', favoritesNum: {$sum: '$favorites'}}
+                $group: { _id: '$uid', favoritesNum: { $sum: '$favorites' } }
             }
-        ])
+        ]);
+        return users;
     }
 }
 const userService = new UserService();

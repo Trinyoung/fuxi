@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: \fuxi\src\server\tags\interface.ts
  */
-import { BaseInterface } from "../base/baseInterface";
+import { BaseInterface } from '../base/baseInterface';
 
 export interface TagInterface extends BaseInterface {
     name?: string

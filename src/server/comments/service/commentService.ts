@@ -15,11 +15,11 @@ import { UserSchema } from '../../user/models/user';
 import { User } from '../../user/userInterface';
 import { commentFavoriteModel } from '../models/favoriteModel';
 class CommentService extends BaseService<CommentInterface> {
-    constructor() {
+    constructor () {
         super(commentModel);
     }
 
-    async getListForComments(query: FilterQuery<CommentInterface>, uid: string, lean: Boolean, projection?: string) {
+    async getListForComments (query: FilterQuery<CommentInterface>, uid: string, lean: Boolean, projection?: string) {
         query = this._fullQuery(query);
         const model = this.model.find(query, projection);
         let result: CommentInterface[];
@@ -27,7 +27,7 @@ class CommentService extends BaseService<CommentInterface> {
         const favoritesKeyByComment = favorites.reduce((x: any, y) => {
             x[JSON.stringify(y._id)] = y;
             return x;
-        }, {})
+        }, {});
         if (lean) {
             result = await model.lean(true);
         } else {
@@ -40,7 +40,7 @@ class CommentService extends BaseService<CommentInterface> {
                 uids.push(item.createdBy);
             }
             return newItem;
-        })
+        });
         const users = await UserSchema.find({ uid: { $in: uids } }, 'uid realName');
         const userKeyByUid = users.reduce((x: any, y: User) => {
             x[y.uid] = y;
@@ -49,7 +49,7 @@ class CommentService extends BaseService<CommentInterface> {
         return this._cascaderForComments(comments, [], userKeyByUid);
     }
 
-    private _cascaderForComments(comments: CommentInterface[], result: any[], userKeyByUid: any) {
+    private _cascaderForComments (comments: CommentInterface[], result: any[], userKeyByUid: any) {
         const topComments = comments.filter(item => item.isTop);
         const childrenComments = comments.filter(item => !item.isTop);
         const commentKeyById = comments.reduce((x: any, y) => {
@@ -64,7 +64,7 @@ class CommentService extends BaseService<CommentInterface> {
                 replyObj.target = {
                     content: commentKeyById[JSON.stringify(y.reply)].content,
                     nilName: commentKeyById[JSON.stringify(y.reply)].nilName || userKeyByUid[commentKeyById[JSON.stringify(y.reply)].createdBy].username || userKeyByUid[commentKeyById[JSON.stringify(y.reply)].createdBy].realName
-                }
+                };
             }
             if (x[JSON.stringify(y.parent)]) {
                 x[JSON.stringify(y.parent)].push(replyObj);
