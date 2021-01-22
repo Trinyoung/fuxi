@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon -e ts,tsx --exec ts-node ./src/app.ts",
-    "start": "NODE_ENV=prod node ./dist/src/app.js -p 3000",
+    "start": "cross-env NODE_ENV=production node ./dist/app.js -p 3000",
     "build": "tsc"
   },
   "repository": {
@@ -52,6 +52,7 @@
     "@types/redis": "^2.8.28",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.18.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
