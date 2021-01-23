@@ -5,8 +5,8 @@ import { ArticleInterface, ArticleBaseInterface } from '../interface';
 import { populateInterface } from '../../base/baseInterface';
 import * as moment from 'moment';
 import { FilterQuery, Schema } from 'mongoose';
-// import { UserSchema } from '../../user/models/user';
-import { UserSchema } from 'user/models/user';
+import { UserSchema } from '../../user/models/user';
+// import { UserSchema } from 'user/models/user';
 import { favoriteModel } from '../models/favorite';
 import { commentModel } from '../../comments/models/commentModel';
 
