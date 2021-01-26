@@ -1,5 +1,6 @@
 node_modules
 dist
-.package-lock.json
+package-lock.json
 logs
 .vscode
+ecosystem.config.js
