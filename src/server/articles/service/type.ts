@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-20 16:12:46
+ * @LastEditTime: 2021-01-29 20:08:05
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
@@ -101,14 +101,14 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
             }
         ]);
         const result: CascaderTypeInterface[] = [];
-        TypeService.typesTree(types as ArticleTypeInterface[], null, result);
+        TypeService.typesTree(types as ArticleTypeInterface[], {} as CascaderTypeInterface, result);
         return result;
     }
 
     static typesTree (types: ArticleTypeInterface[], parent: CascaderTypeInterface, result?: CascaderTypeInterface[]) {
         for (let i = 0; i < types.length; i++) {
             const type = types[i];
-            if ((!type.parent || parent) && JSON.stringify(type.parent) === JSON.stringify(parent.value)) {
+            if ((!type.parent || parent.value) && JSON.stringify(type.parent) === JSON.stringify(parent.value)) {
                 const item: CascaderTypeInterface = {
                     label: type.title,
                     value: type._id,
