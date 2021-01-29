@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-02 19:51:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-29 20:08:05
+ * @LastEditTime: 2021-01-29 20:38:25
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\service\type.ts
@@ -97,7 +97,7 @@ export class TypeService extends BaseService<ArticleTypeInterface> {
                 }
             },
             {
-                $sort: { _id: -1 }
+                $sort: { isTop: -1 }
             }
         ]);
         const result: CascaderTypeInterface[] = [];
