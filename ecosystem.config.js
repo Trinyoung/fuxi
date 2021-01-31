@@ -1,7 +1,7 @@
 module.exports = {
     apps: [{
         name: 'fuxi',
-        script: '/home/ubuntu/pm2_test/dist/app.js',
+        script: './dist/app.js',
 
         // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
         // args: 'one two',
