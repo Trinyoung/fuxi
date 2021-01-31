@@ -3,4 +3,4 @@ dist
 package-lock.json
 logs
 .vscode
-ecosystem.config.js
+# ecosystem.config.js
