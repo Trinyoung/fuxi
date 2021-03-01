@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-10-20 08:34:43
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-20 14:10:27
+ * @LastEditTime: 2021-03-01 15:19:18
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\typeController.ts
@@ -47,7 +47,7 @@ export default class TypeController extends BaseController<TypeService> {
     async getParentTypes (ctx: ParameterizedContext) {
         try {
             const { typeCode, id, withTitle } = ctx.query;
-            const result = await this.service.getParentTypes(typeCode, id, Number(withTitle));
+            const result = await this.service.getParentTypes(typeCode as string, id as string, Number(withTitle));
             ctx.body = { code: '000', result };
         } catch (err) {
             Logger.error('getParentTypes error:', err.message);

@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-08-17 08:32:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-20 16:12:31
+ * @LastEditTime: 2021-03-01 15:10:01
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\user\controller.ts
@@ -17,8 +17,8 @@ export default class UserController extends BaseController<UserService> {
     }
 
     async getUserInfo (ctx: ParameterizedContext) {
-        const { createdBy } = ctx.query;
-        const result = await this.service.getItem({ createdBy }, 'username createdAt realName uid');
+        const uid  = ctx.query.uid as string;
+        const result = await this.service.getItem({ uid }, 'username createdAt realName uid');
         ctx.body = { code: '000', result };
     }
 }
