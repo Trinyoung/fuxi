@@ -17,7 +17,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
 
     public async getListByPageForAriticle (query: FilterQuery<ArticleInterface>, page = 1, limit = 10, projection?: string, populate?: string | string[] | populateInterface | populateInterface[]) {
         const result = await this.getListByPage(query, page, limit, projection, populate, { createdAt: -1 });
-        console.log(result,' reuslt------------------>')
+        console.log(result.total,' reuslt------------------>')
         const InAweek = moment().subtract(1, 'week').unix();
         const ids = result.docs.map(item => item._id);
         const [readsKeyByArticle, favoriteKeyByArticle, commentKeyByArticle] = await Promise.all([
