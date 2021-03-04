@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-03-01 15:17:26
+ * @LastEditTime: 2021-03-04 09:47:25
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\articleController.ts
@@ -66,7 +66,7 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getListByPageForAriticle (ctx: ParameterizedContext) {
         try {
-            const { page, limit, category, createdBy } = ctx.query;
+            let { page, limit, category, createdBy } = ctx.query;
             const query: FilterQuery<ArticleInterface> = {};
             if (ctx.query.type) {
                 query.type = ctx.query.type as string;
@@ -88,7 +88,9 @@ export default class ArticleController extends BaseController<ArticleService> {
                     select: 'title typeCode'
                 }
             ];
-            const result = await this.service.getListByPageForAriticle(query, Number(page), Number(limit), projection, populater);
+            console.log(query,'-------------->');
+            const result = await this.service.getListByPageForAriticle(query, Number(page) || 1, Number(limit) || 10, projection, populater);
+            console.log('获取文章，的过程！')
             ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('获取文章列表失败', err.message);
