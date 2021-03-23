@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-11 16:27:17
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-20 16:20:59
+ * @LastEditTime: 2021-03-04 09:47:25
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\controller\articleController.ts
@@ -13,7 +13,7 @@ import { ParameterizedContext } from 'koa';
 import { Logger } from '../../../logger/config';
 import { populateInterface } from '../../base/baseInterface';
 import { FilterQuery } from 'mongoose';
-import { ArticleInterface } from '../interface';
+import { ArticleInterface, category } from '../interface';
 export default class ArticleController extends BaseController<ArticleService> {
     populater: populateInterface[]
     constructor () {
@@ -47,16 +47,16 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getListByPage (ctx: ParameterizedContext) {
         try {
-            const { page, limit, type, category } = ctx.query;
+            const { page, limit, category } = ctx.query;
             let query: FilterQuery<ArticleInterface>;
-            if (type) {
-                query.type = type;
+            if (ctx.query.type) {
+                query.type = ctx.query.type as string;
             }
             if (category) {
-                query.category = category;
+                query.category = Number(category) as category;
             }
             const projection = '';
-            const result = await this.service.getListByPageForAriticle(query, Number(page), limit, projection, this.populater);
+            const result = await this.service.getListByPageForAriticle(query, Number(page), Number(limit), projection, this.populater);
             ctx.body = { code: '000', result };
         } catch (err) {
             Logger.error('获取文章列表失败', err.message);
@@ -66,16 +66,16 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getListByPageForAriticle (ctx: ParameterizedContext) {
         try {
-            const { page, limit, type, category, createdBy } = ctx.query;
+            let { page, limit, category, createdBy } = ctx.query;
             const query: FilterQuery<ArticleInterface> = {};
-            if (type) {
-                query.type = type;
+            if (ctx.query.type) {
+                query.type = ctx.query.type as string;
             }
             if (category) {
-                query.category = category;
+                query.category = Number(category) as category;
             }
             if (createdBy) {
-                query.createdBy = createdBy;
+                query.createdBy = createdBy as string;
             }
             const projection = '';
             const populater: populateInterface[] = [
@@ -88,7 +88,9 @@ export default class ArticleController extends BaseController<ArticleService> {
                     select: 'title typeCode'
                 }
             ];
-            const result = await this.service.getListByPageForAriticle(query, page, limit, projection, populater);
+            console.log(query,'-------------->');
+            const result = await this.service.getListByPageForAriticle(query, Number(page) || 1, Number(limit) || 10, projection, populater);
+            console.log('获取文章，的过程！')
             ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('获取文章列表失败', err.message);
@@ -98,8 +100,8 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getArticleNums (ctx: ParameterizedContext) {
         try {
-            const { createdBy } = ctx.query;
-            const result = await this.service.getArticleNums(createdBy);
+            // const { createdBy } = ctx.query;
+            const result = await this.service.getArticleNums(ctx.query.createdBy as string);
             ctx.body = { code: '000', result };
         } catch (err) {
             Logger.error('获取文章数量失败', err.message);
@@ -109,7 +111,7 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getHotArticles (ctx: ParameterizedContext) {
         try {
-            const authorUid = ctx.query.authorUid;
+            const authorUid = ctx.query.authorUid as string;
             const result = await this.service.getHotAticles(authorUid);
             ctx.body = { code: '000', result };
         } catch (err) {
@@ -120,7 +122,7 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getNewArticles (ctx: ParameterizedContext) {
         try {
-            const result = await this.service.getNewArticles(ctx.query.createdBy, 1, 5, 'title createdBy createdAt');
+            const result = await this.service.getNewArticles(ctx.query.createdBy as string, 1, 5, 'title createdBy createdAt');
             ctx.body = { code: '000', result };
         } catch (err) {
             Logger.error('获取最新文章失败', err.message);

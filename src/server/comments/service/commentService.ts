@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-10-22 08:37:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-14 08:44:40
+ * @LastEditTime: 2021-03-05 13:56:03
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\comments\service\commentService.ts
@@ -15,11 +15,11 @@ import { UserSchema } from '../../user/models/user';
 import { User } from '../../user/userInterface';
 import { commentFavoriteModel } from '../models/favoriteModel';
 class CommentService extends BaseService<CommentInterface> {
-    constructor () {
+    constructor() {
         super(commentModel);
     }
 
-    async getListForComments (query: FilterQuery<CommentInterface>, uid: string, lean: Boolean, projection?: string) {
+    async getListForComments(query: FilterQuery<CommentInterface>, uid: string, lean: Boolean, projection?: string) {
         query = this._fullQuery(query);
         const model = this.model.find(query, projection);
         let result: CommentInterface[];
@@ -49,7 +49,7 @@ class CommentService extends BaseService<CommentInterface> {
         return this._cascaderForComments(comments, [], userKeyByUid);
     }
 
-    private _cascaderForComments (comments: CommentInterface[], result: any[], userKeyByUid: any) {
+    private _cascaderForComments(comments: CommentInterface[], result: any[], userKeyByUid: any) {
         const topComments = comments.filter(item => item.isTop);
         const childrenComments = comments.filter(item => !item.isTop);
         const commentKeyById = comments.reduce((x: any, y) => {

@@ -1,8 +1,8 @@
 /*
  * @Author: Trinyoung.Lu
  * @Date: 2020-10-19 15:57:57
- * @LastEditors: Trinyoung.Lu
- * @LastEditTime: 2020-10-22 19:34:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-03-01 15:19:41
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\comments\controller\commentController.ts
@@ -18,7 +18,7 @@ export default class CommentController extends BaseController<CommentService> {
     public async getListForComments(ctx: ParameterizedContext) {
         try {
             const query = Object.assign({}, ctx.params);
-            const uid = ctx.query.uid;
+            const uid = ctx.query.uid as string;
             const result = await this.service.getListForComments(query, uid, true);
             return ctx.body = { code: '000', result: result };
         } catch (err) {
