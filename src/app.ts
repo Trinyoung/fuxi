@@ -14,7 +14,6 @@ import route from './router';
 import { Logger } from './logger/config';
 import * as config from 'config';
 const port = process.env.port || config.get('port');
-console.log(process.env.port, '----------------->')
 console.log(process.env.NODE_ENV, '环境变量');
 const app = new Koa();
 const router = new Router(
