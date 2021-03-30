@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon -e ts,tsx --exec ts-node ./src/app.ts",
-    "start": "cross-env NODE_ENV=production node ./dist/app.js -p 3000",
+    "start": "cross-env NODE_ENV=production node ./dist/app.js",
     "build": "tsc"
   },
   "repository": {
