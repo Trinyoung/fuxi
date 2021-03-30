@@ -4,6 +4,6 @@ COPY package*.json ./
 RUN npm install
 RUN npm run build
 COPY ./dist .
-EXPOSE 3000
-CMD npm run start
+EXPOSE 9221
+CMD npm run prod
 # CMD ['node', './dist/app.js']
