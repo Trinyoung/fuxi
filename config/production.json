@@ -1,7 +1,7 @@
 {
     "database": {
         "mongodb": {
-            "url": "mongodb://trinyoung:987654321q@www.trinyoung.cn:27017/process"
+            "url": "mongodb://trinyoung:987654321q@127.0.0.1:27017/process"
         }
     },
     "port": 9221
