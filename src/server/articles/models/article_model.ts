@@ -2,7 +2,7 @@
  * @Author: Trinyoung.Lu
  * @Date: 2020-09-12 20:53:18
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2020-11-20 09:19:15
+ * @LastEditTime: 2021-04-23 10:48:11
  * @PageTitle: XXX页面
  * @Description: XXX
  * @FilePath: \fuxi\server\articles\models\article_model.ts
@@ -12,7 +12,6 @@ import { Schema, PaginateModel } from 'mongoose';
 import * as mongoosePaginate from 'mongoose-paginate';
 import * as uniqueValidator from 'mongoose-unique-validator';
 import { ArticleInterface } from '../interface';
-
 
 const ArticleSchema = new Schema({
     title: String,

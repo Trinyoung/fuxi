@@ -8,7 +8,8 @@
     "dev": "nodemon -e ts,tsx --exec ts-node ./src/app.ts",
     "start": "npm run build && cross-env NODE_ENV=production node ./dist/app.js",
     "prod": "cross-env NODE_ENV=production node ./dist/app.js",
-    "build": "tsc"
+    "build": "tsc",
+    "serve:debug":"nodemon --inspect=9221 ./dist/app.js"
   },
   "repository": {
     "type": "git",
