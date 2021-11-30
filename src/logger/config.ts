@@ -11,10 +11,10 @@ import * as log4js from 'log4js';
 
 log4js.configure({
     appenders: {
-        dongrui_node: { type: 'console', filename: '../logs/access' },
+        fuxi_node: { type: 'console', filename: '../logs/access' },
         error: {
             type: 'file',
-            filename: 'logs/dongrui_error',
+            filename: 'logs/fuxi_error',
             alwaysIncludePattern: true,
             pattern: '-yyyy-MM-dd.log',
             layout: {
@@ -24,7 +24,7 @@ log4js.configure({
         },
         access: {
             type: 'file',
-            filename: 'logs/dongrui_access',
+            filename: 'logs/fuxi_access',
             alwaysIncludePattern: true,
             pattern: '-yyyy-MM-dd.log',
             layout: {
@@ -34,8 +34,8 @@ log4js.configure({
         }
     },
     categories: {
-        default: { appenders: ['access', 'dongrui_node'], level: 'debug' },
-        err: { appenders: ['error', 'dongrui_node'], level: 'error' },
+        default: { appenders: ['access', 'fuxi_node'], level: 'debug' },
+        err: { appenders: ['error', 'fuxi_node'], level: 'error' },
         access: { appenders: ['access'], level: 'debug' }
     }
 });

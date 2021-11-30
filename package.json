@@ -9,7 +9,7 @@
     "start": "npm run build && cross-env NODE_ENV=production node ./dist/app.js",
     "prod": "cross-env NODE_ENV=production node ./dist/app.js",
     "build": "tsc",
-    "serve:debug":"nodemon --inspect=9221 ./dist/app.js"
+    "serve:debug": "nodemon --inspect=9221 ./dist/app.js"
   },
   "repository": {
     "type": "git",

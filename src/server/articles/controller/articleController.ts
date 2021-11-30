@@ -66,7 +66,7 @@ export default class ArticleController extends BaseController<ArticleService> {
 
     public async getListByPageForAriticle (ctx: ParameterizedContext) {
         try {
-            let { page, limit, category, createdBy } = ctx.query;
+            const { page, limit, category, createdBy } = ctx.query;
             const query: FilterQuery<ArticleInterface> = {};
             if (ctx.query.type) {
                 query.type = ctx.query.type as string;
@@ -88,9 +88,7 @@ export default class ArticleController extends BaseController<ArticleService> {
                     select: 'title typeCode'
                 }
             ];
-            console.log(query,'-------------->');
             const result = await this.service.getListByPageForAriticle(query, Number(page) || 1, Number(limit) || 10, projection, populater);
-            console.log('获取文章，的过程！')
             ctx.body = { code: '000', result };
         } catch (err) {
             Logger.info('获取文章列表失败', err.message);

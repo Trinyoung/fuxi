@@ -19,6 +19,7 @@ export interface ArticleInterface extends BaseInterface, Document {
     title?: string,
     type?: string,
     category?: category, // 1 代表单篇幅文章， 2 代表系列文章
+    abstract?: string,
     public?: YesOrNo,
     subtitle?: string,
     content?: string,
