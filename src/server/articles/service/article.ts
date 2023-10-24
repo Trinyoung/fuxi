@@ -25,6 +25,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
             favoriteModel.find({ articleId: { $in: ids } }).then((res:any) => { return Promise.resolve(this.objKeyByArticle(res)); }),
             commentModel.find({ articleId: { $in: ids } }).then((res:any) => { return Promise.resolve(this.objKeyByArticle(res)); })
         ]);
+        console.log(marked.parse(result.docs[0].content), 'getListByPageForAriticle ======content');
         const resArr = result.docs.map(item => {
             const readsObj = Object.assign({ total: 0, weekNums: 0, monthNums: 0 }, readsKeyByArticle[JSON.stringify(item._id)]);
             const favoriteObj = Object.assign({ total: 0, weekNums: 0, monthNums: 0 }, favoriteKeyByArticle[JSON.stringify(item._id)]);
