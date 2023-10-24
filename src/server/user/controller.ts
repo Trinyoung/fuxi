@@ -17,7 +17,7 @@ export default class UserController extends BaseController<UserService> {
     }
 
     async getUserInfo (ctx: ParameterizedContext) {
-        const uid  = ctx.query.uid as string;
+        const uid = ctx.query.uid as string;
         const result = await this.service.getItem({ uid }, 'username createdAt realName uid avatar');
         ctx.body = { code: '000', result };
     }

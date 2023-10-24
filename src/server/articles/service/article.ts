@@ -9,6 +9,7 @@ import { UserSchema } from '../../user/models/user';
 // import { UserSchema } from 'user/models/user';
 import { favoriteModel } from '../models/favorite';
 import { commentModel } from '../../comments/models/commentModel';
+import { marked } from 'marked';
 
 export class ArticleService extends BaseService<ArticleInterface> {
     constructor () {
@@ -29,6 +30,7 @@ export class ArticleService extends BaseService<ArticleInterface> {
             const favoriteObj = Object.assign({ total: 0, weekNums: 0, monthNums: 0 }, favoriteKeyByArticle[JSON.stringify(item._id)]);
             const commentObj = Object.assign({ total: 0, weekNums: 0, monthNums: 0 }, commentKeyByArticle[JSON.stringify(item._id)]);
             return Object.assign(item, {
+                content: marked.parse(item.content),
                 hasReads: readsObj.total,
                 favorites: favoriteObj.total,
                 comments: commentObj.total,
